@@ -11,6 +11,8 @@ Google Books API to retrieve book information.
 2. Install dependencies
 
 ```
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -25,6 +27,12 @@ export GOOGLE_BOOKS_API_KEY=<Google Books API Key>
 
 ```
 python main.py
+```
+
+4.1. Run the application in uvicorn server
+
+```
+uvicorn main:app --reload
 ```
 
 5. Open http://localhost:8000 in your browser
