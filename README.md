@@ -46,7 +46,7 @@ uvicorn main:app --reload
 - CSS
 
 ## thing to do
-
+- [ ] Add swagger documentation
 - [ ] Add user authentication
 - [ ] deploy to heroku
 - [ ] CI/CD (use github actions)
