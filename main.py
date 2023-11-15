@@ -61,7 +61,7 @@ async def get_books_list():
 async def login(user: User):
     """
     Login
-    :return: list[Books]
+    :return: User
     """
     user = await User.objects.get(username=user.username)
     if user.password == user.password:

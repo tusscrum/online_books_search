@@ -40,7 +40,8 @@ async def get_book_info(isbn: str) -> dict:
         async with session.get(
                 f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key={GOOGLE_BOOKS_API_KEY}") as response:
             response = await response.json()
-            return response.get('items', [])[0].get('volumeInfo', {})
+            response = await get_isbn_to_model(response)
+            return response
 
 
 async def search_books(query: str) -> list[dict]:
@@ -59,6 +60,23 @@ async def search_books(query: str) -> list[dict]:
 
             # save this item into monogoDB
             return response
+
+
+async def get_isbn_to_model(response: dict) -> dict:
+    """
+    Get response to model
+    :param response:
+    :return:
+    """
+    res_dict = {}
+    response = response['items'][0].get('volumeInfo', {})
+    res_dict['isbn'] = response.get('industryIdentifiers', [])[0].get('identifier', '')
+    res_dict['title'] = response.get('title', '')
+    res_dict['author'] = ','.join(response.get('authors', []))
+    res_dict['year'] = response.get('publishedDate', '')
+    res_dict['image'] = response.get('imageLinks', {}).get('thumbnail', '')
+    res_dict['description'] = response.get('description', '')
+    return res_dict
 
 
 async def get_response_to_model(response: dict) -> list[dict]:
