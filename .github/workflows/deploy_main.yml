@@ -1,0 +1,36 @@
+name: Test pipeline
+
+on:
+  push:
+    branches:
+      - main
+env:
+  AWS_REGION: eu-central-1
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8 pytest
+      - name: Setup DVC
+        uses: iterative/setup-dvc@v1
+      - name: Pull data from DVC
+        run: dvc pull -f
+      - name: Run Flake8
+        run: |
+          flake8 --max-line-length 99
+      - name: Run pytest
+        run: pytest
