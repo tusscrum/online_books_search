@@ -18,11 +18,16 @@
                   ┃┫┫  ┃┫┫
                   ┗┻┛  ┗┻┛
 """
+import os
+
 from pymongo import MongoClient
 
-from conf import MONGODB_URL
+try:
+    from conf import MONGODB_URL
+except:
+    pass
 
-client = MongoClient(MONGODB_URL, tls=True, tlsAllowInvalidCertificates=True)
+client = MongoClient(MONGODB_URL or os.environ.get('MONGODB_URL'), tls=True, tlsAllowInvalidCertificates=True)
 db = client['test']  # database name
 collection = db['books']
 

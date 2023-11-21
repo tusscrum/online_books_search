@@ -23,7 +23,10 @@ import os
 
 import aiohttp
 
-from conf import GOOGLE_BOOKS_API_KEY
+try:
+    from conf import MONGODB_URL, GOOGLE_BOOKS_API_KEY
+except:
+    pass
 
 GOOGLE_BOOKS_API_KEY = os.getenv('GOOGLE_BOOKS_API_KEY') or GOOGLE_BOOKS_API_KEY
 

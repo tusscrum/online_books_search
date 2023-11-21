@@ -21,7 +21,15 @@ pip install -r requirements.txt
 ```
 export MONOGO_URI = <MongoDB URI>
 export GOOGLE_BOOKS_API_KEY=<Google Books API Key>
+
 ```
+
+Or touch config.py and add the following
+
+```
+MONGO_URI = <MongoDB URI>
+GOOGLE_BOOKS_API_KEY=<Google Books API Key>
+``` 
 
 4. Run the application
 
@@ -46,6 +54,7 @@ uvicorn main:app --reload
 - CSS
 
 ## thing to do
+
 - [ ] Add swagger documentation
 - [ ] Add user authentication
 - [ ] deploy to heroku

@@ -6,7 +6,10 @@ import motor.motor_asyncio
 from fastapi import FastAPI
 from starlette import status
 
-from conf import MONGODB_URL
+try:
+    from conf import MONGODB_URL
+except:
+    pass
 from control import get_book_info, search_books
 from models import Books, User
 
