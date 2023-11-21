@@ -45,8 +45,15 @@ class Books(BaseModel):
                 "title": "Eloquent JavaScript, Second Edition",
                 "author": "Marijn Haverbeke",
                 "year": 2014,
-                "image": "https://images-na.ssl-images-amazon.com/images/I/51u8ZRDCVoL._SX377_BO1,204,203,200_.jpg",
-                "description": "JavaScript lies at the heart of almost every modern web application, from social apps to the newest browser-based games. Though simple for beginners to pick up and play with, JavaScript is a flexible, complex language that you can use to build full-scale applications."
+                "image": "https://images-na.ssl-images-amazon.com/images/I/51u8ZRDCVoL._SX377_BO1,"
+                         "204,203,200_.jpg",
+                "description": "JavaScript lies at the heart of almost every modern web "
+                               "application, from social apps "
+                               "to the newest browser-based games. Though simple for "
+                               "beginners to pick up and play with,"
+                               " JavaScript is a flexible, complex language that "
+                               "you can use to build full-scale "
+                               "applications."
             }
         }
     }
@@ -87,24 +94,43 @@ class BooksCollecion(BaseModel):
                         "title": "Eloquent JavaScript, Second Edition",
                         "author": "Marijn Haverbeke",
                         "year": 2014,
-                        "image": "https://images-na.ssl-images-amazon.com/images/I/51u8ZRDCVoL._SX377_BO1,204,203,200_.jpg",
-                        "description": "JavaScript lies at the heart of almost every modern web application, from social apps to the newest browser-based games. Though simple for beginners to pick up and play with, JavaScript is a flexible, complex language that you can use to build full-scale applications."
+                        "image": "https://images-na.ssl-images-amazon.com/images/I/51u8ZRDCVoL._SX377_"
+                                 "BO1,204,203,200_.jpg",
+                        "description": "JavaScript lies at the heart of almost every modern "
+                                       "web application, from social apps to the newest browser-based "
+                                       "games. Though simple for beginners to pick up and play with, "
+                                       "JavaScript is a flexible, complex language that you can use to build full-scale "
+                                       "applications."
                     },
                     {
                         "isbn": "9781449331818",
                         "title": "Learning JavaScript Design Patterns",
                         "author": "Addy Osmani",
                         "year": 2012,
-                        "image": "https://images-na.ssl-images-amazon.com/images/I/51T%2BWt430fL._SX379_BO1,204,203,200_.jpg",
-                        "description": "With Learning JavaScript Design Patterns, you’ll learn how to write beautiful, structured, and maintainable JavaScript by applying classical and modern design patterns to the language. If you want to keep your code efficient, more manageable, and up-to-date with the latest best practices, this book is for you."
+                        "image": "https://images-na.ssl-images-amazon.com/images/I/51T%2BWt430fL."
+                                 "_SX379_BO1,204,203,200_.jpg",
+                        "description": "With Learning JavaScript Design Patterns,"
+                                       " you’ll learn how to write beautiful, structured, "
+                                       "and maintainable JavaScript by applying classical and"
+                                       " modern design patterns to the language. If you want"
+                                       " to keep your code efficient, more manageable, "
+                                       "and up-to-date with the latest best practices,"
+                                       " this book is for you."
                     },
                     {
                         "isbn": "9781449365035",
                         "title": "Speaking JavaScript",
                         "author": "Axel Rauschmayer",
                         "year": 2014,
-                        "image": "https://images-na.ssl-images-amazon.com/images/I/51cUVaBWZzL._SX376_BO1,204,203,200_.jpg",
-                        "description": "Like it or not, JavaScript is everywhere these days—from browser to server to mobile—and now you, too, need to learn the language or dive deeper than you have. This concise book guides you into and through JavaScript, written by a veteran programmer who once found himself in the same position."
+                        "image": "https://images-na.ssl-images-amazon.com/images/"
+                                 "I/51cUVaBWZzL._SX376_BO1,204,203,200_.jpg",
+                        "description": "Like it or not, JavaScript is everywhere "
+                                       "these days—from browser to server to"
+                                       " mobile—and now you, too, need to learn "
+                                       "the language or dive deeper than you have. "
+                                       "This concise book guides you into and through"
+                                       " JavaScript, written by a veteran programmer "
+                                       "who once found himself in the same position."
                     },
                     {
                         "isbn": "978149195029"}

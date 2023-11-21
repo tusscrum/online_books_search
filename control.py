@@ -25,9 +25,10 @@ import aiohttp
 
 from conf import GOOGLE_BOOKS_API_KEY
 
-GOOGLE_BOOKS_API_KEY=os.getenv('GOOGLE_BOOKS_API_KEY') or GOOGLE_BOOKS_API_KEY
+GOOGLE_BOOKS_API_KEY = os.getenv('GOOGLE_BOOKS_API_KEY') or GOOGLE_BOOKS_API_KEY
 
-# use google books api to get the book information
+
+# use Google books api to get the book information
 async def get_book_info(isbn: str) -> dict:
     """
     Get book info by isbn
