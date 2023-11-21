@@ -22,7 +22,10 @@ jobs:
       - name: set up environment
         run: |
           export MONGODB_URL=$MONGODB_URL
+
           export GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
+          echo $MONGODB_URL
+          echo $GOOGLE_BOOKS_API_KEY
 
       - name: Setup Python
         uses: actions/setup-python@v2
