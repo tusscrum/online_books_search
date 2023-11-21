@@ -19,12 +19,13 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
-      - name: set up environment
+      - name : set up environment
         run: |
           export MONGODB_URL=$MONGODB_URL
           export GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
         with:
           python-version: 3.9
       - name: Install dependencies
@@ -44,12 +45,14 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
-      - name: set up environment
+
+      - name : set up environment
         run: |
           export MONGODB_URL=$MONGODB_URL
           export GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
+      - name: Setup Python
+        uses: actions/setup-python@v2
+
         with:
           python-version: 3.9
       - name: Install dependencies
