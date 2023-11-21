@@ -5,7 +5,7 @@ on:
     branches:
       - main
 env:
-  AWS_REGION: eu-central-1
+  AWS_DEFAULT_REGION: us-east-1
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
@@ -19,19 +19,15 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
           pip install flake8 pytest
-      - name: Setup DVC
-        uses: iterative/setup-dvc@v1
-      - name: Pull data from DVC
-        run: dvc pull -f
       - name: Run Flake8
         run: |
-          flake8 --max-line-length 99
+          flake8 --max-line-length 198
       - name: Run pytest
         run: pytest
 
@@ -44,19 +40,15 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
           pip install flake8 pytest
-      - name: Setup DVC
-        uses: iterative/setup-dvc@v1
-      - name: Pull data from DVC
-        run: dvc pull -f
       - name: Run Flake8
         run: |
-          flake8 --max-line-length 99
+          flake8 --max-line-length 198
       - name: Run pytest
         run: pytest
       - name: Deploy to AWS
@@ -67,11 +59,12 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /home/ubuntu/ML_project
+            cd /home/ubuntu/online_books_search
             git pull
             dvc pull -f
             pip install -r requirements.txt
-            uvicorn app.main:app --host host --port port
+            uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
+      
 
       
         

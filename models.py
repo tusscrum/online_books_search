@@ -30,7 +30,7 @@ class Books(BaseModel):
     BooksModel
     """
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    isbn: int = Field(...)
+    isbn: str = Field(...)
     title: str = Field(...)
     author: str = Field(...)
     year: str = Field(...)
