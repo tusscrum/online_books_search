@@ -54,10 +54,6 @@ jobs:
       - name: Deploy to AWS
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
           script: |
             cd /home/ubuntu/online_books_search
             git pull
