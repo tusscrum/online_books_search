@@ -31,6 +31,6 @@ def test_mongodb():
     post = {'_id': 0, 'name': 'Jeff', 'score': 9}
     collection.insert_one(post)
     collection.find_one({'name': 'Jeff'})
-    one = collection.find_one({'name': 'Jeff'})
+    _ = collection.find_one({'name': 'Jeff'})
     collection.update_one({'name': 'Jeff'}, {'$set': {'score': 10}})
     collection.delete_one({'name': 'Jeff'})
