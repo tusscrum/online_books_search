@@ -34,9 +34,13 @@ jobs:
           pip install flake8 pytest
       - name: Run Flake8
         run: |
+          echo ${{ github.event_name }}
         #          flake8 --max-line-length 198
       - name: Run pytest
-  #        run: pytest
+        run:
+          ehco $SUPER_SECRET
+          echo "next time I will use it"
+
 
   deploy:
     runs-on: ubuntu-latest
