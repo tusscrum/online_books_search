@@ -46,31 +46,32 @@ jobs:
     runs-on: ubuntu-latest
     #    needs: test
     steps:
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
-        script: |
-          if [ ! -d "/home/ubuntu/" ]; then
-            mkdir /home/ubuntu/
-            fi
-          cd /home/ubuntu/
-          if [ ! -d "/home/ubuntu/online_books_search/" ]; then
+      - name: deploy to aws
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            if [ ! -d "/home/ubuntu/" ]; then
+              mkdir /home/ubuntu/
+              fi
+            cd /home/ubuntu/
+            if [ ! -d "/home/ubuntu/online_books_search/" ]; then
             git clone https://github.com/tusscrum/online_books_search.git
             fi
-          cd online_books_search
-          if [ ! -d "/home/ubuntu/online_books_search/venv/" ]; then
-            python3 -m venv venv
-            fi
-          source venv/bin/activate
-          git pull
-          pip install -r requirements.txt
-          export MONGODB_URL=$MONGODB_URL
-          export GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
-          python main.py
-            
+            cd online_books_search
+            if [ ! -d "/home/ubuntu/online_books_search/venv/" ]; then
+              python3 -m venv venv
+              fi
+            source venv/bin/activate
+            git pull
+            pip install -r requirements.txt
+            export MONGODB_URL=$MONGODB_URL
+            export GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
+            python main.py
+              
             
         
 
