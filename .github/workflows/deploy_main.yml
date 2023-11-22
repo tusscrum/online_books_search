@@ -13,35 +13,35 @@ env:
 
 
 
+#jobs:
+#  test:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout repo
+#        uses: actions/checkout@v2
+#      - name: set up environment
+#      - shell:
+#          env:
+#            SUPER_SECRET: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
+#      - name: Setup Python
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: 3.9
+#      - name: Install dependencies
+#        run: |
+#          pip install --upgrade pip
+#          pip install -r requirements.txt
+#          pip install flake8 pytest
+#      - name: Run Flake8
+#        run: |
+#          echo ${{ github.event_name }}
+#        #          flake8 --max-line-length 198
+#      - name: Run pytest
+#        run:
+#          ehco $SUPER_SECRET
+#          echo "next time I will use it"
+
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-      - name: set up environment
-      - shell:
-          env:
-            SUPER_SECRET: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install flake8 pytest
-      - name: Run Flake8
-        run: |
-          echo ${{ github.event_name }}
-        #          flake8 --max-line-length 198
-      - name: Run pytest
-        run:
-          ehco $SUPER_SECRET
-          echo "next time I will use it"
-
-
   deploy:
     runs-on: ubuntu-latest
     #    needs: test
