@@ -66,7 +66,7 @@ jobs:
             pip3 install -r requirements.txt
             export MONGODB_URL=$MONGODB_URL
             export GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
-            python3 main.py
+            python3 main.py &
               
             
         
