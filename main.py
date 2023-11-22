@@ -126,3 +126,9 @@ async def get_book_by_isbn(isbn: str) -> dict:
     """
     book = await get_book_info(isbn)
     return book
+
+
+if __name__ == '__main__':
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8080)

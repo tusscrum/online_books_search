@@ -19,6 +19,6 @@
                   ┗┻┛  ┗┻┛
 """
 import os
-MOGODB_URL = os.getenv('MONGODB_URL')
-GOOGLE_BOOKS_API_KEY = os.getenv('GOOGLE_BOOKS_API_KEY')
 
+MONGODB_URL = os.environ.get('MONGODB_URL')
+GOOGLE_BOOKS_API_KEY = os.environ.get('GOOGLE_BOOKS_API_KEY')
