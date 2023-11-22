@@ -93,12 +93,16 @@ async def get_response_to_model(response: dict) -> list[dict]:
     res = []
     for item in response:
         res_dict = {}
-        res_dict['isbn'] = item['volumeInfo'].get('industryIdentifiers', [])[0].get('identifier', '')
+        industryIdentifiers = item['volumeInfo'].get('industryIdentifiers', [])
+        if len(industryIdentifiers) == 0:
+            res_dict['isbn'] = ''
+        else:
+            res_dict['isbn'] = industryIdentifiers[0].get('identifier', '')
         res_dict['title'] = item['volumeInfo'].get('title', '')
         res_dict['author'] = ','.join(item['volumeInfo'].get('authors', []))
         res_dict['year'] = item['volumeInfo'].get('publishedDate', '')
         res_dict['image'] = item['volumeInfo'].get('imageLinks', {}).get('thumbnail', '')
         res_dict['description'] = item['volumeInfo'].get('description', '')
         res.append(res_dict)
-        logging.info(res_dict, 'res_dict')
+        logging.debug(res_dict, 'res_dict')
     return res
