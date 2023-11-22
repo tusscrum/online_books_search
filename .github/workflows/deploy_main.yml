@@ -46,53 +46,30 @@ jobs:
     runs-on: ubuntu-latest
     #    needs: test
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-
-      - name: set up environment
-        run: |
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          if [ ! -d "/home/ubuntu/" ]; then
+            mkdir /home/ubuntu/
+            fi
+          cd /home/ubuntu/
+          if [ ! -d "/home/ubuntu/online_books_search/" ]; then
+            git clone https://github.com/tusscrum/online_books_search.git
+            fi
+          cd online_books_search
+          if [ ! -d "/home/ubuntu/online_books_search/venv/" ]; then
+            python3 -m venv venv
+            fi
+          source venv/bin/activate
+          git pull
+          pip install -r requirements.txt
           export MONGODB_URL=$MONGODB_URL
           export GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
-      - name: Setup Python
-        uses: actions/setup-python@v2
-
-        with:
-          python-version: 3.9
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install flake8 pytest
-      - name: Run Flake8
-        run: |
-        #          flake8 --max-line-length 198
-      - name: Run pytest
-        run: pytest
-      - name: Deploy to AWS
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            if [ ! -d "/home/ubuntu/" ]; then
-              mkdir /home/ubuntu/
-              fi
-            cd /home/ubuntu/
-            if [ ! -d "/home/ubuntu/online_books_search/" ]; then
-              git clone https://github.com/tusscrum/online_books_search.git
-              fi
-            cd online_books_search
-            if [ ! -d "/home/ubuntu/online_books_search/venv/" ]; then
-              python3 -m venv venv
-              fi
-            source venv/bin/activate
-            git pull
-            pip install -r requirements.txt
-            export MONGODB_URL=$MONGODB_URL
-            export GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
-            python main.py
+          python main.py
             
             
         

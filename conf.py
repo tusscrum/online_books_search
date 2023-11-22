@@ -18,7 +18,4 @@
                   ┃┫┫  ┃┫┫
                   ┗┻┛  ┗┻┛
 """
-import os
 
-MONGODB_URL = os.environ.get('MONGODB_URL')
-GOOGLE_BOOKS_API_KEY = os.environ.get('GOOGLE_BOOKS_API_KEY')
