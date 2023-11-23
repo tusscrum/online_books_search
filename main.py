@@ -66,12 +66,15 @@ async def login(user: User):
     Login
     :return: User
     """
-    user = await User.objects.get(username=user.username)
+    # if no user, return 404
+    user = await User.objects.find_one(username=user.username)
+    if not user:
+        return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
     if user.password == user.password:
         # set session
         return {"message": "Login success", 'user': user}
     else:
-        return {"message": "Login failed"}
+        return {"message": "Login failed"}  # , status.HTTP_404_NOT_FOUND
 
 
 @app.post('/api/register',
@@ -83,12 +86,13 @@ async def register(user: User):
     Register
     :return: user
     """
-    user = await User.objects.get(username=user.username)
+    # if no user, return 404
+    user = await User.objects.find_one(username=user.username)
     if user:
-        return {"message": "User already exists"}, status.HTTP_400_BAD_REQUEST
+        return {"message": "User already exists"}, status.HTTP_404_NOT_FOUND
     else:
-        await user.save()
-        return {"message": "Register success", 'user': user}, status.HTTP_201_CREATED
+        user = await User.objects.create(username=user.username, password=user.password)
+        return {"message": "Register success", 'user': user}
 
 
 @app.get('/api/search',

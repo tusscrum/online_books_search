@@ -18,4 +18,7 @@
                   ┃┫┫  ┃┫┫
                   ┗┻┛  ┗┻┛
 """
+import os
 
+MONGODB_URL = os.getenv('MONGODB_URL') or 'mongodb://localhost:27017'
+GOOGLE_BOOKS_API_KEY = os.getenv('GOOGLE_BOOKS_API_KEY') or 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
