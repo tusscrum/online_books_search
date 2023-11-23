@@ -67,7 +67,7 @@ jobs:
             export MONGODB_URL=$MONGODB_URL
             export GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
             kill -9 $(lsof -t -i:8080)
-            nohup python3 main.py > /dev/null 2>&1 &  
+            nohup python3 main.py > /dev/null 2>&1 &
               
             
         

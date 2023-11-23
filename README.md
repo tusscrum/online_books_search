@@ -55,10 +55,10 @@ uvicorn main:app --reload
 
 ## thing to do
 
-- [ ] Add swagger documentation
-- [ ] Add user authentication
-- [ ] deploy to heroku
-- [ ] CI/CD (use github actions)
-- [ ] Add tests
+- [x] Add swagger documentation
+- [x] Add user authentication
+- [x] deploy to aws
+- [x] CI/CD (use github actions)
+- [x] Add tests
 
  
