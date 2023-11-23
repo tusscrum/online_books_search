@@ -19,6 +19,7 @@ app = FastAPI(
     version="0.0.1",
     docs_url="/api/docs",
     redoc_url="/api/redocs",
+    openapi_url="/api/openapi.json",
 
 )
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ.get('MONGODB_URL') or MONGODB_URL, tls=True,
@@ -67,7 +68,10 @@ async def login(user: User):
     :return: User
     """
     # if no user, return 404
-    user = await User.objects.find_one(username=user.username)
+    try:
+        user = await User.objects.find_one(username=user.username)
+    except:
+        user = None
     if not user:
         return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
     if user.password == user.password:
@@ -100,7 +104,8 @@ async def register(user: User):
          response_model_exclude_unset=True,
          response_model_exclude_defaults=True,
          status_code=status.HTTP_200_OK,
-         response_description='Search books'
+         response_description='Search books',
+
          )
 async def api_search_books(query: str):
     """
