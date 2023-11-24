@@ -11,7 +11,7 @@ try:
 except:
     pass
 from control import get_book_info, search_books
-from models import Books, User
+from models import Books, User, UserBooks
 
 app = FastAPI(
     title="Bookstore",
@@ -31,15 +31,6 @@ books_collection = db.get_collection("books")
 
 # init mongodb
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
 
 
 @app.get('/api/books_list',
@@ -68,10 +59,7 @@ async def login(user: User):
     :return: User
     """
     # if no user, return 404
-    try:
-        user = await User.objects.find_one(username=user.username)
-    except:
-        user = None
+    user = await User.objects.find_one(username=user.username) or User.objects.find_one(email=user.email) or None
     if not user:
         return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
     if user.password == user.password:
@@ -91,11 +79,11 @@ async def register(user: User):
     :return: user
     """
     # if no user, return 404
-    user = await User.objects.find_one(username=user.username)
+    user = await User.objects.find_one(username=user.username) or User.objects.find_one(email=user.email) or None
     if user:
         return {"message": "User already exists"}, status.HTTP_404_NOT_FOUND
     else:
-        user = await User.objects.create(username=user.username, password=user.password)
+        user = await User.objects.create(username=user.username, password=user.password, email=user.email)
         return {"message": "Register success", 'user': user}
 
 
@@ -135,6 +123,76 @@ async def get_book_by_isbn(isbn: str) -> dict:
     """
     book = await get_book_info(isbn)
     return book
+
+
+# get user's books list
+@app.get('/api/user/{userid}/books',
+         response_model=Page[UserBooks],
+         response_model_exclude_unset=True,
+         response_model_exclude_defaults=True,
+         status_code=status.HTTP_200_OK,
+         response_description='Get user\'s books list'
+         )
+async def get_user_books_list(userid: str, parqms: Params = Depends()):
+    """
+    Get user's books list
+    :return: Page [UserBooks]
+    """
+    user_books_list = await UserBooks.objects.find({"userid": userid}).to_list(100)
+    return paginate(user_books_list, parqms)
+
+
+@app.post('/api/user/{userid}/books',
+          response_model=UserBooks,
+          status_code=status.HTTP_201_CREATED,
+          response_description='Add book to user\'s books list and some comments'
+
+          )
+async def add_book_to_user_books_list(userid: str, user_books: UserBooks):
+    """
+    Add book to user's books list
+    :return: UserBooks
+    """
+    # if no user, return 404
+    try:
+        user = await User.objects.find_one(id=userid)
+    except:
+        user = None
+    if not user:
+        return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
+    else:
+        user_books = await UserBooks.objects.create(userid=userid, isbn=user_books.isbn, comments=user_books.comments,
+                                                    rating=user_books.rating, status=user_books.status)
+        return {"message": "Add book to user's books list success", 'user_books': user_books}
+
+
+@app.put('/api/user/{userid}/books/{isbn}',
+         response_model=UserBooks,
+         status_code=status.HTTP_201_CREATED,
+         response_description='Update book to user\'s books list and some comments'
+         )
+async def update_book_to_user_books_list(userid: str, isbn: str, user_books: UserBooks):
+    """
+    Update book to user's books list
+    :return: UserBooks
+    """
+    # if no user, return 404
+    try:
+        user = await User.objects.find_one(id=userid)
+    except:
+        user = None
+    if not user:
+        return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
+    try:
+        book = await books_collection.find_one({"isbn": isbn})
+    except:
+        book = None
+    if not book:
+        return {"message": "Book not found"}, status.HTTP_404_NOT_FOUND
+    else:
+        user_books = await UserBooks.objects.update_one(userid=userid, isbn=isbn, comments=user_books.comments,
+                                                        rating=user_books.rating, status=user_books.status)
+        return {"message": "Update book to user's books list success", 'user_books': user_books}
 
 
 if __name__ == '__main__':

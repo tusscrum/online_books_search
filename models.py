@@ -20,7 +20,7 @@
 """
 from typing import (Optional, Annotated)
 
-from pydantic import (BaseModel, BeforeValidator, Field)
+from pydantic import (BaseModel, BeforeValidator, Field, EmailStr)
 
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
@@ -65,6 +65,7 @@ class User(BaseModel):
     """
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     username: str = Field(...)
+    email: str = EmailStr()
     password: str = Field(...)
 
     model_config = {
@@ -72,6 +73,7 @@ class User(BaseModel):
         "schema_extra": {
             "example": {
                 "username": "liazylee",
+                "email": "liazylee@email.com",
                 "password": "123456"
             }
         }
@@ -99,7 +101,8 @@ class BooksCollecion(BaseModel):
                         "description": "JavaScript lies at the heart of almost every modern "
                                        "web application, from social apps to the newest browser-based "
                                        "games. Though simple for beginners to pick up and play with, "
-                                       "JavaScript is a flexible, complex language that you can use to build full-scale "
+                                       "JavaScript is a flexible, complex language that you can use to build "
+                                       "full-scale "
                                        "applications."
                     },
                     {
@@ -138,3 +141,46 @@ class BooksCollecion(BaseModel):
             }
         }
     }
+
+
+class UserBooks(BaseModel):
+    """
+    UserBooks
+    """
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    user_id: str = Field(...)
+    isbn: str = Field(...)
+    title: str = Field(...)
+    auothor: str = Field(...)
+    year: str = Field(...)
+    image: str = Field(...)
+    description: str = Field(...)
+    status: str = Field(default='reading', choices=['reading', 'read', 'want to read'])
+    comment: str = Field(default='')
+    rating: int = Field(default=0, gt=0, lt=6)
+
+    model_config = {
+        "allow_population_by_field_name": True,
+        "schema_extra": {
+            "example": {
+                "user_id": "123456",
+                "isbn": "9781593275846",
+                "title": "Eloquent JavaScript, Second Edition",
+                "author": "Marijn Haverbeke",
+                "year": 2014,
+                "image": "https://images-na.ssl-images-amazon.com/images/I/51u8ZRDCVoL._SX377_BO1,"
+                         "204,203,200_.jpg",
+                "description": "JavaScript lies at the heart of almost every modern web "
+                               "application, from social apps "
+                               "to the newest browser-based games. Though simple for "
+                               "beginners to pick up and play with,"
+                               " JavaScript is a flexible, complex language that "
+                               "you can use to build full-scale "
+                               "applications.",
+                "status": "reading",
+                "comment": "good book",
+                "rating": 5
+            }
+        }
+    }
+
