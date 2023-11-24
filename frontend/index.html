@@ -339,7 +339,7 @@
 
         function displayBooksSearch(books) {
             books = books.items;
-            booksDisplay.innerHTML = '';
+            booksDisplay.innerHTML = '<h2>search results</h2>';
             books.forEach(book => {
                 const bookElement = document.createElement('div');
                 bookElement.className = 'book-profile';
