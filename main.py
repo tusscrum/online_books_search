@@ -1,5 +1,4 @@
 import os
-from typing import List
 
 # create a database to monogoDB
 import motor.motor_asyncio
@@ -101,14 +100,14 @@ async def register(user: User):
 
 
 @app.get('/api/search',
-         response_model=List[Books],
+         response_model=Page[Books],
          response_model_exclude_unset=True,
          response_model_exclude_defaults=True,
          status_code=status.HTTP_200_OK,
          response_description='Search books',
 
          )
-async def api_search_books(query: str):
+async def api_search_books(query: str, parqms: Params = Depends()):
     """
     Search books
     :return: list[Books]
@@ -119,7 +118,7 @@ async def api_search_books(query: str):
         if await books_collection.find_one({"isbn": book.get('isbn')}) is not None:
             books_list.remove(book)
     await books_collection.insert_many(books_list)
-    return books_list
+    return paginate(books_list, parqms)
 
 
 @app.get('/api/books/{isbn}',
