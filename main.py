@@ -3,7 +3,8 @@ from typing import List
 
 # create a database to monogoDB
 import motor.motor_asyncio
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from fastapi_pagination import Page, Params, paginate
 from starlette import status
 
 try:
@@ -43,19 +44,19 @@ async def say_hello(name: str):
 
 
 @app.get('/api/books_list',
-         response_model=List[Books],
+         response_model=Page[Books],
          response_model_exclude_unset=True,
          response_model_exclude_defaults=True,
          status_code=status.HTTP_200_OK,
          response_description='Get books list'
          )
-async def get_books_list():
+async def get_books_list(parqms: Params = Depends()):
     """
     Get books list
-    :return: list[Books]
+    :return: Page [Books]
     """
     books_list = await books_collection.find().to_list(100)
-    return books_list
+    return paginate(books_list, parqms)
 
 
 @app.post('/api/login',
