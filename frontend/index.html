@@ -331,7 +331,7 @@
         // Event listener for search functionality
         searchButton.addEventListener('click', function () {
             const query = searchQuery.value;
-            fetch(`/api/search_books?query=${encodeURIComponent(query)}`)
+            fetch(`/api/search?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(books => displayBooksSearch(books))
                 .catch(error => console.error('Error searching books:', error));
