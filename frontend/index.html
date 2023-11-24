@@ -331,11 +331,29 @@
         // Event listener for search functionality
         searchButton.addEventListener('click', function () {
             const query = searchQuery.value;
-            fetch(`http://3.89.227.131:8080/api/search_books?query=${encodeURIComponent(query)}`)
+            fetch(`/api/search_books?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
-                .then(books => displayBooks(books))
+                .then(books => displayBooksSearch(books))
                 .catch(error => console.error('Error searching books:', error));
         });
+
+        function displayBooksSearch(books) {
+            books = books.items;
+            booksDisplay.innerHTML = '';
+            books.forEach(book => {
+                const bookElement = document.createElement('div');
+                bookElement.className = 'book-profile';
+                bookElement.innerHTML = `
+                        <img src="${book.image}" alt="${book.title}">
+                        <h3>${book.title}</h3>
+                        <p>Author: ${book.author}</p>
+                        <p>ISBN: ${book.isbn}</p>
+                        <p>Year: ${book.year}</p>
+                        <p>${book.description}</p>`;
+                booksDisplay.appendChild(bookElement);
+            });
+        }
+
 
         // Dark mode toggle functionality
         darkModeButton.addEventListener('click', function () {
