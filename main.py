@@ -1,17 +1,22 @@
-import os
-
 # create a database to monogoDB
-import motor.motor_asyncio
+
 from fastapi import FastAPI, Depends
+from fastapi.encoders import jsonable_encoder
+from fastapi.params import Body
 from fastapi_pagination import Page, Params, paginate
+from fastapi_pagination.utils import disable_installed_extensions_check
 from starlette import status
+
+from dbs import books_collection, users_collection, users_books_collection, add_user
+
+disable_installed_extensions_check()
 
 try:
     from conf import MONGODB_URL
 except:
     pass
-from control import get_book_info, search_books
-from models import Books, User, UserBooks
+from control import get_book_info, search_books, helper_user
+from models import Books, UserBooks, UpdateUserBooks, UserRegister, UserLogin
 
 app = FastAPI(
     title="Bookstore",
@@ -22,15 +27,9 @@ app = FastAPI(
     openapi_url="/api/openapi.json",
 
 )
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ.get('MONGODB_URL') or MONGODB_URL, tls=True,
-                                                tlsAllowInvalidCertificates=True)
-
-db = client['college']
-books_collection = db.get_collection("books")
 
 
 # init mongodb
-
 
 
 @app.get('/api/books_list',
@@ -45,7 +44,7 @@ async def get_books_list(parqms: Params = Depends()):
     Get books list
     :return: Page [Books]
     """
-    books_list = await books_collection.find().to_list(100)
+    books_list = await books_collection.find({}).sort({"_id": -1}).to_list(100)
     return paginate(books_list, parqms)
 
 
@@ -53,38 +52,56 @@ async def get_books_list(parqms: Params = Depends()):
           status_code=status.HTTP_200_OK,
           response_description='Login',
           )
-async def login(user: User):
+async def login(user: UserLogin = Body(...)):
     """
     Login
     :return: User
     """
     # if no user, return 404
-    user = await User.objects.find_one(username=user.username) or User.objects.find_one(email=user.email) or None
-    if not user:
+
+    finded_user = await users_collection.find_one({"username": user.username}) or users_collection.find_one(
+        {"email": user.email}) or None
+    if not finded_user:
         return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
-    if user.password == user.password:
+
+    if finded_user.get('password') == user.password:
+
         # set session
-        return {"message": "Login success", 'user': user}
+        finded_user = helper_user(finded_user)
+        return {"message": "Login success", 'user': finded_user}
     else:
         return {"message": "Login failed"}  # , status.HTTP_404_NOT_FOUND
 
 
 @app.post('/api/register',
-          status_code=status.HTTP_201_CREATED,
+
           response_description='Register',
+
           )
-async def register(user: User):
+async def register(user: UserRegister = Body(...)):
     """
     Register
-    :return: user
+    :return: User
     """
     # if no user, return 404
-    user = await User.objects.find_one(username=user.username) or User.objects.find_one(email=user.email) or None
-    if user:
+    exit_user = await users_collection.find_one({"username": user.username}) or \
+                await users_collection.find_one({"email": user.email}) or None
+    if exit_user:
         return {"message": "User already exists"}, status.HTTP_404_NOT_FOUND
     else:
-        user = await User.objects.create(username=user.username, password=user.password, email=user.email)
-        return {"message": "Register success", 'user': user}
+        user = jsonable_encoder(user)
+        user = await add_user(user)
+        return {"message": "Register success", 'user': user}, status.HTTP_201_CREATED
+
+
+@app.get('/api/user_list', )
+async def get_user_list(parqms: Params = Depends()):
+    """
+    Get user list
+    :return: Page [User]
+    """
+    users_list = await users_collection.find({}).sort({"_id": -1}).to_list(100)
+    return paginate(users_list, parqms)
 
 
 @app.get('/api/search',
@@ -105,6 +122,10 @@ async def api_search_books(query: str, parqms: Params = Depends()):
     for book in books_list:
         if await books_collection.find_one({"isbn": book.get('isbn')}) is not None:
             books_list.remove(book)
+    # remove the duplicate books in list
+    books_list = list({v['isbn']: v for v in books_list}.values())
+
+    print(books_list)
     await books_collection.insert_many(books_list)
     return paginate(books_list, parqms)
 
@@ -138,7 +159,7 @@ async def get_user_books_list(userid: str, parqms: Params = Depends()):
     Get user's books list
     :return: Page [UserBooks]
     """
-    user_books_list = await UserBooks.objects.find({"userid": userid}).to_list(100)
+    user_books_list = await users_books_collection.find({"userid": userid}).to_list(100)
     return paginate(user_books_list, parqms)
 
 
@@ -155,19 +176,18 @@ async def add_book_to_user_books_list(userid: str, user_books: UserBooks):
     """
     # if no user, return 404
     try:
-        user = await User.objects.find_one(id=userid)
+        user = await users_collection.find_one(id=userid)
     except:
         user = None
     if not user:
         return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
     else:
-        user_books = await UserBooks.objects.create(userid=userid, isbn=user_books.isbn, comments=user_books.comments,
-                                                    rating=user_books.rating, status=user_books.status)
+        user_books = await users_books_collection.insert_one(user_books)
         return {"message": "Add book to user's books list success", 'user_books': user_books}
 
 
 @app.put('/api/user/{userid}/books/{isbn}',
-         response_model=UserBooks,
+         response_model=UpdateUserBooks,
          status_code=status.HTTP_201_CREATED,
          response_description='Update book to user\'s books list and some comments'
          )
@@ -177,21 +197,17 @@ async def update_book_to_user_books_list(userid: str, isbn: str, user_books: Use
     :return: UserBooks
     """
     # if no user, return 404
-    try:
-        user = await User.objects.find_one(id=userid)
-    except:
-        user = None
+
+    user = await users_collection.find_one(id=userid)
     if not user:
         return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
-    try:
-        book = await books_collection.find_one({"isbn": isbn})
-    except:
-        book = None
+
+    book = await books_collection.find_one({"isbn": isbn})
     if not book:
         return {"message": "Book not found"}, status.HTTP_404_NOT_FOUND
     else:
-        user_books = await UserBooks.objects.update_one(userid=userid, isbn=isbn, comments=user_books.comments,
-                                                        rating=user_books.rating, status=user_books.status)
+        user_books = await users_books_collection.find_one_and_update({"userid": userid, "isbn": isbn}, user_books)
+
         return {"message": "Update book to user's books list success", 'user_books': user_books}
 
 

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup and Login Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="main">
+        <input type="checkbox" id="chk" aria-hidden="true">
+
+        <div class="signup">
+            <form id="signupForm">
+                <label for="chk" aria-hidden="true">Sign up</label>
+                <input type="text" name="txt" placeholder="User name" required="" autocomplete="off">
+                <input type="email" name="email" placeholder="Email" required="" autocomplete="off">
+                <div class="password-container">
+                    <input type="password" name="pswd" id="password" placeholder="Password" required="">
+                    <span class="eye" onclick="togglePassword('password')">👁️</span>
+                </div>
+                <div class="password-container">
+                    <input type="password" name="confirmPswd" id="confirmPassword" placeholder="Confirm password" required="">
+                    <span class="eye" onclick="togglePassword('confirmPassword')">👁️</span>
+                </div>
+                <button type="button" onclick="validateSignUp()">Sign up</button>
+            </form>
+        </div>
+
+  
+
+     <div class="login">
+         <form action=(https://books.dehome.top/) method="post">
+        <label for="chk" aria-hidden="true">Login</label>
+        <input type="email" name="email" placeholder="Email" required="" autocomplete="off">
+        <div class="password-container">
+            <input type="password" name="password" id="loginPassword" placeholder="Password" required="">
+            <span class="eye" onclick="togglePassword('loginPassword')">👁️</span>
+        </div>
+        <button>Login</button>
+        </form>
+    </div>
+
+
+    <div id="popup" class="modal">
+        <span class="close" onclick="closePopup()"> ×</span>
+        <p id="popupText"></p>
+    </div>
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: rgba(204, 34, 34, 0.389);
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+
+        
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: sans-serif;
+            background: url('https://wallpapercave.com/wp/wp6974179.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .main {
+            width: 350px;
+            height: 480px;
+            background: rgba(61, 23, 164, 0.954);
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 5px 30px 50px black;
+        }
+   
+#chk {
+display: none;
+}
+
+.signup {
+position: relative;
+width: 100%;
+height: 100%;
+}
+
+
+label {
+   color:rgba(255, 255, 255, 0.68);
+   font-size: 35px;
+   justify-content: center;
+   display: flex;
+   margin: 60px;
+   font-weight: bold;
+   cursor: pointer;
+   transition: .5s ease-in-out;
+   margin-bottom: 10px;
+}
+ 
+input {
+ width: 60%;
+  background:white;
+height: 20px;
+justify-content: center;
+display: flex;
+margin: 18px auto;
+padding: 10px;
+border: none;
+outline: none;
+border-radius: 50px;
+ }
+
+  
+button {
+   width: 60%;
+   height: 40px;
+  margin: 10px auto;
+  justify-content: center; 
+  display: block;
+ color: white;
+   background: rgb(43, 98, 194);
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 18px; outline: none;
+   border: none;
+   border-radius: 10px;
+   transition: .3s ease-in;
+   cursor: pointer;
+   box-shadow: 5px 20px 40px black;
+}
+
+
+  
+button:hover {
+  background: rgb(20, 57, 105);
+}
+.login {
+
+    height: 460px;
+    background: #eee; 
+    border-radius: 60% / 10%;
+   transform: translateY(-180px); 
+   transition: .8s ease-in-out;
+}
+
+.login label {
+   color: #573b8a;
+   
+   transform: scale(.6);
+}
+.login p {
+text-align: center;
+padding: 20px;
+}
+
+#chk:checked ~ .login {
+
+transform: translateY(-500px);
+}
+
+
+#chk:checked ~ .login label { 
+    transform: scale(1);
+}
+#chk:checked ~ .signup label { transform: 
+    scale(.6);
+}
+
+        .password-container {
+            position: relative;
+        }
+
+        .eye {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        function validateSignUp() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (password.length < 6) {
+                showPopup("Password is not complicated enough, please enter 6-12 characters");
+            } else if (password !== confirmPassword) {
+                showPopup("Please reconfirm the password is the same twice");
+            } else {
+                showPopup("You have successfully registered!!");
+            }
+        }
+
+        function showPopup(message) {
+            var popup = document.getElementById("popup");
+            var popupText = document.getElementById("popupText");
+            popupText.innerText = message;
+            popup.style.display = "block";
+        }
+
+        function closePopup() {
+            var popup = document.getElementById("popup");
+            popup.style.display = "none";
+        }
+
+        function togglePassword(inputId) {
+            var input = document.getElementById(inputId);
+            input.type = (input.type === "password") ? "text" : "password";
+        }
+    </script>
+</body>
+</html>

@@ -18,54 +18,34 @@
 #                   ┃┫┫  ┃┫┫
 #                   ┗┻┛  ┗┻┛
 # """
-# import os
-#
-# # create a database to monogoDB
-# import motor.motor_asyncio
-#
-# from conf import MONGODB_URL
-#
-#
-# class DataBase:
-#
-#     def __init__(self):
-#         self.uri = os.environ.get('MONGODB_URL') or MONGODB_URL
-#         self.client = motor.motor_asyncio.AsyncIOMotorClient(self.uri, tls=True, tlsAllowInvalidCertificates=True)
-#
-#         self.db = self.client.college
-#         self.books_collection = self.db.get_collection("books")
-#
-#     def new_book(self, book_data: dict) -> dict:
-#         """
-#         Create a new book
-#         :param book_data: dict
-#         :return: dict
-#         """
-#         return self.books_collection.insert_one(book_data)
-#
-#     def get_book(self, isbn: int) -> dict:
-#         """
-#         Get a book by isbn
-#         :param isbn: int
-#         :return: dict
-#         """
-#         return self.books_collection.find_one({"isbn": isbn})
-#
-#     def get_books(self) -> list[dict]:
-#         """
-#         Get all books
-#         :return: list
-#         """
-#         books = self.books_collection.find()
-#         return books
-#
-#     def insert_many(self, data: list[dict]) -> list[dict]:
-#         """
-#         Insert many data
-#         :param data: list
-#         :return: list
-#         """
-#         return self.books_collection.insert_many(data)
-#
-#
-# mongodb = DataBase()
+import os
+
+import motor.motor_asyncio
+
+from conf import MONGODB_URL
+from control import helper_user
+
+client = motor.motor_asyncio.AsyncIOMotorClient(os.environ.get('MONGODB_URL') or MONGODB_URL, tls=True,
+                                                tlsAllowInvalidCertificates=True)
+
+db = client['college']
+books_collection = db.get_collection("books")
+books_collection.create_index("isbn", unique=True)
+users_collection = db.get_collection("users")
+users_collection.create_index("email", unique=True)
+users_books_collection = db.get_collection("users_books")
+users_books_collection.create_index("user_id", unique=True)
+users_books_collection.create_index("book_id", unique=True)
+
+
+async def add_user(user: dict) -> dict:
+    """
+    Add user
+    :param user: dict
+    :return: dict
+    """
+
+    result = await users_collection.insert_one(user)
+
+    new_user = await users_collection.find_one({"_id": result.inserted_id})
+    return helper_user(new_user)

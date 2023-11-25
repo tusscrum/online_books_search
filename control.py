@@ -106,3 +106,17 @@ async def get_response_to_model(response: dict) -> list[dict]:
         res.append(res_dict)
         logging.debug(res_dict, 'res_dict')
     return res
+
+
+def helper_user(user: dict) -> dict:
+    """
+    Helper user
+    :param user: dict
+    :return: dict
+    """
+    return {
+        "id": str(user.get('_id')),
+        "username": user.get('username'),
+        "email": user.get('email'),
+        "password": user.get('password')
+    }
