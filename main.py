@@ -1,12 +1,10 @@
 # create a database to monogoDB
 
 from fastapi import FastAPI, Depends
-from fastapi.encoders import jsonable_encoder
-from fastapi.params import Body
 from fastapi_pagination import Page, Params, paginate
 from starlette import status
 
-from dbs import books_collection, users_collection, add_user
+from dbs import books_collection
 
 # disable_installed_extensions_check()
 
@@ -14,8 +12,8 @@ try:
     from conf import MONGODB_URL
 except:
     pass
-from control import get_book_info, search_books, helper_user
-from models import Books, UserRegister, UserLogin
+from control import get_book_info, search_books
+from models import Books
 
 app = FastAPI(
     title="Bookstore",
@@ -47,61 +45,61 @@ async def get_books_list(parqms: Params = Depends()):
     return paginate(books_list, parqms)
 
 
-@app.post('/api/login',
-          status_code=status.HTTP_200_OK,
-          response_description='Login',
-          )
-async def login(user: UserLogin = Body(...)):
-    """
-    Login
-    :return: User
-    """
-    # if no user, return 404
-
-    finded_user = await users_collection.find_one({"username": user.username}) or users_collection.find_one(
-        {"email": user.email}) or None
-    if not finded_user:
-        return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
-
-    if finded_user.get('password') == user.password:
-
-        # set session
-        finded_user = helper_user(finded_user)
-        return {"message": "Login success", 'user': finded_user}
-    else:
-        return {"message": "Login failed"}  # , status.HTTP_404_NOT_FOUND
-
-
-@app.post('/api/register',
-
-          response_description='Register',
-
-          )
-async def register(user: UserRegister = Body(...)):
-    """
-    Register
-    :return: User
-    """
-    # if no user, return 404
-    exit_user = await users_collection.find_one({"username": user.username}) or \
-                await users_collection.find_one({"email": user.email}) or None
-    if exit_user:
-        return {"message": "User already exists"}, status.HTTP_404_NOT_FOUND
-    else:
-        user = jsonable_encoder(user)
-        user = await add_user(user)
-        return {"message": "Register success", 'user': user}, status.HTTP_201_CREATED
-
-
-@app.get('/api/user_list', )
-async def get_user_list(parqms: Params = Depends()):
-    """
-    Get user list
-    :return: Page [User]
-    """
-    users_list = await users_collection.find({}).to_list(100)
-    return paginate(users_list, parqms)
-
+# @app.post('/api/login',
+#           status_code=status.HTTP_200_OK,
+#           response_description='Login',
+#           )
+# async def login(user: UserLogin = Body(...)):
+#     """
+#     Login
+#     :return: User
+#     """
+#     # if no user, return 404
+#
+#     finded_user = await users_collection.find_one({"username": user.username}) or users_collection.find_one(
+#         {"email": user.email}) or None
+#     if not finded_user:
+#         return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
+#
+#     if finded_user.get('password') == user.password:
+#
+#         # set session
+#         finded_user = helper_user(finded_user)
+#         return {"message": "Login success", 'user': finded_user}
+#     else:
+#         return {"message": "Login failed"}  # , status.HTTP_404_NOT_FOUND
+#
+#
+# @app.post('/api/register',
+#
+#           response_description='Register',
+#
+#           )
+# async def register(user: UserRegister = Body(...)):
+#     """
+#     Register
+#     :return: User
+#     """
+#     # if no user, return 404
+#     exit_user = await users_collection.find_one({"username": user.username}) or \
+#                 await users_collection.find_one({"email": user.email}) or None
+#     if exit_user:
+#         return {"message": "User already exists"}, status.HTTP_404_NOT_FOUND
+#     else:
+#         user = jsonable_encoder(user)
+#         user = await add_user(user)
+#         return {"message": "Register success", 'user': user}, status.HTTP_201_CREATED
+#
+#
+# @app.get('/api/user_list', )
+# async def get_user_list(parqms: Params = Depends()):
+#     """
+#     Get user list
+#     :return: Page [User]
+#     """
+#     users_list = await users_collection.find({}).to_list(100)
+#     return paginate(users_list, parqms)
+#
 
 @app.get('/api/search',
          response_model=Page[Books],
