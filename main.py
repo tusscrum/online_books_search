@@ -6,7 +6,7 @@ from fastapi.params import Body
 from fastapi_pagination import Page, Params, paginate
 from starlette import status
 
-from dbs import books_collection, users_collection, users_books_collection, add_user, add_or_update_users_books
+from dbs import books_collection, users_collection, add_user
 
 # disable_installed_extensions_check()
 
@@ -15,7 +15,7 @@ try:
 except:
     pass
 from control import get_book_info, search_books, helper_user
-from models import Books, UserBooks, UpdateUserBooks, UserRegister, UserLogin
+from models import Books, UserRegister, UserLogin
 
 app = FastAPI(
     title="Bookstore",
@@ -146,62 +146,62 @@ async def get_book_by_isbn(isbn: str) -> dict:
 
 
 # get user's books list
-@app.get('/api/user/{userid}/books',
-         response_model=Page[UserBooks],
-         response_model_exclude_unset=True,
-         response_model_exclude_defaults=True,
-         status_code=status.HTTP_200_OK,
-         response_description='Get user\'s books list'
-         )
-async def get_user_books_list(userid: str, parqms: Params = Depends()):
-    """
-    Get user's books list
-    :return: Page [UserBooks]
-    """
-    user_books_list = await users_books_collection.find({"userid": userid}).to_list(100)
-    return paginate(user_books_list, parqms)
+# @app.get('/api/user/{userid}/books',
+#          response_model=Page[UserBooks],
+#          response_model_exclude_unset=True,
+#          response_model_exclude_defaults=True,
+#          status_code=status.HTTP_200_OK,
+#          response_description='Get user\'s books list'
+#          )
+# async def get_user_books_list(userid: str, parqms: Params = Depends()):
+#     """
+#     Get user's books list
+#     :return: Page [UserBooks]
+#     """
+#     user_books_list = await users_books_collection.find({"userid": userid}).to_list(100)
+#     return paginate(user_books_list, parqms)
 
 
-@app.post('/api/user/{userid}/books',
-          response_model=UserBooks,
-          status_code=status.HTTP_201_CREATED,
-          response_description='Add book to user\'s books list and some comments'
+# @app.post('/api/user/{userid}/books',
+#           response_model=UserBooks,
+#           status_code=status.HTTP_201_CREATED,
+#           response_description='Add book to user\'s books list and some comments'
+#
+#           )
+# async def add_book_to_user_books_list(userid: str, user_books: UserBooks = Body(...)):
+#     """
+#     Add book to user's books list
+#     :return: UserBooks
+#     """
+#     # if no user, return 404
+#     _ = users_collection.find_one({"_id": userid})
+#     if not _:
+#         return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
+#     else:
+#         users_books = jsonable_encoder(user_books)
+#         user_books = add_or_update_users_books(users_books)
+#         return {"message": "Add book to user's books list success", 'user_books': user_books}
 
-          )
-async def add_book_to_user_books_list(userid: str, user_books: UserBooks = Body(...)):
-    """
-    Add book to user's books list
-    :return: UserBooks
-    """
-    # if no user, return 404
-    _ = users_collection.find_one({"_id": userid})
-    if not _:
-        return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
-    else:
-        users_books = jsonable_encoder(user_books)
-        user_books = add_or_update_users_books(users_books)
-        return {"message": "Add book to user's books list success", 'user_books': user_books}
 
-
-@app.put('/api/user/{id}/books/',
-         response_model=UpdateUserBooks,
-         status_code=status.HTTP_201_CREATED,
-         response_description='Update book to user\'s books list and some comments'
-         )
-async def update_book_to_user_books_list(id: str, user_books: UserBooks = Body(...)):
-    """
-    Update book to user's books list
-    :return: UserBooks
-    """
-    # if no user, return 404
-
-    _ = users_books_collection.find_one({"_id": id})
-    if not _:
-        return {"message": "book not found"}, status.HTTP_404_NOT_FOUND
-    else:
-        user_books = jsonable_encoder(user_books)
-        user_books = add_or_update_users_books(user_books)
-        return {"message": "Update book to user's books list success", 'user_books': user_books}
+# @app.put('/api/user/{id}/books/',
+#          response_model=UpdateUserBooks,
+#          status_code=status.HTTP_201_CREATED,
+#          response_description='Update book to user\'s books list and some comments'
+#          )
+# async def update_book_to_user_books_list(id: str, user_books: UserBooks = Body(...)):
+#     """
+#     Update book to user's books list
+#     :return: UserBooks
+#     """
+#     # if no user, return 404
+#
+#     _ = users_books_collection.find_one({"_id": id})
+#     if not _:
+#         return {"message": "book not found"}, status.HTTP_404_NOT_FOUND
+#     else:
+#         user_books = jsonable_encoder(user_books)
+#         user_books = add_or_update_users_books(user_books)
+#         return {"message": "Update book to user's books list success", 'user_books': user_books}
 
 
 if __name__ == '__main__':
