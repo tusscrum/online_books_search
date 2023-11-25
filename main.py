@@ -44,7 +44,7 @@ async def get_books_list(parqms: Params = Depends()):
     Get books list
     :return: Page [Books]
     """
-    books_list = await books_collection.find().to_list(100)
+    books_list = await books_collection.find().sort('_id', -1).to_list(100)
     return paginate(books_list, parqms)
 
 
@@ -214,4 +214,4 @@ async def update_book_to_user_books_list(userid: str, isbn: str, user_books: Use
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run("app:app", host="0.0.0.0", port=8080)
