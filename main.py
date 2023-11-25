@@ -119,13 +119,13 @@ async def api_search_books(query: str, parqms: Params = Depends()):
     books_list = await search_books(query)
     # remove the duplicate books in monogoDB
     for book in books_list:
-        if await books_collection.find_one({"isbn": book.get('isbn')}) is not None:
+        _ = books_collection.find_one({"isbn": book.get('isbn')})
+        if _:
             books_list.remove(book)
     # remove the duplicate books in list
     books_list = list({v['isbn']: v for v in books_list}.values())
 
-    print(books_list)
-    await books_collection.insert_many(books_list)
+    books_collection.insert_many(books_list)
     return paginate(books_list, parqms)
 
 
@@ -174,11 +174,12 @@ async def add_book_to_user_books_list(userid: str, user_books: UserBooks = Body(
     :return: UserBooks
     """
     # if no user, return 404
-    if not await users_collection.find_one({"_id": userid}):
+    _ = users_collection.find_one({"_id": userid})
+    if not _:
         return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
     else:
         users_books = jsonable_encoder(user_books)
-        user_books = await add_or_update_users_books(users_books)
+        user_books = add_or_update_users_books(users_books)
         return {"message": "Add book to user's books list success", 'user_books': user_books}
 
 
@@ -194,11 +195,12 @@ async def update_book_to_user_books_list(id: str, user_books: UserBooks = Body(.
     """
     # if no user, return 404
 
-    if not await users_books_collection.find_one({"_id": id}):
+    _ = users_books_collection.find_one({"_id": id})
+    if not _:
         return {"message": "book not found"}, status.HTTP_404_NOT_FOUND
     else:
         user_books = jsonable_encoder(user_books)
-        user_books = await add_or_update_users_books(user_books)
+        user_books = add_or_update_users_books(user_books)
         return {"message": "Update book to user's books list success", 'user_books': user_books}
 
 
