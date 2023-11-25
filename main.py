@@ -44,7 +44,7 @@ async def get_books_list(parqms: Params = Depends()):
     Get books list
     :return: Page [Books]
     """
-    books_list = await books_collection.find().to_list(100).sort('_id', -1)
+    books_list = await books_collection.find().sort('_id', -1).to_list(100)
     return paginate(books_list, parqms)
 
 
