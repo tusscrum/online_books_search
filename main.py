@@ -4,12 +4,11 @@ from fastapi import FastAPI, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.params import Body
 from fastapi_pagination import Page, Params, paginate
-from fastapi_pagination.utils import disable_installed_extensions_check
 from starlette import status
 
-from dbs import books_collection, users_collection, users_books_collection, add_user
+from dbs import books_collection, users_collection, users_books_collection, add_user, add_or_update_users_books
 
-disable_installed_extensions_check()
+# disable_installed_extensions_check()
 
 try:
     from conf import MONGODB_URL
@@ -169,49 +168,41 @@ async def get_user_books_list(userid: str, parqms: Params = Depends()):
           response_description='Add book to user\'s books list and some comments'
 
           )
-async def add_book_to_user_books_list(userid: str, user_books: UserBooks):
+async def add_book_to_user_books_list(userid: str, user_books: UserBooks = Body(...)):
     """
     Add book to user's books list
     :return: UserBooks
     """
     # if no user, return 404
-    try:
-        user = await users_collection.find_one(id=userid)
-    except:
-        user = None
-    if not user:
+    if not await users_collection.find_one({"_id": userid}):
         return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
     else:
-        user_books = await users_books_collection.insert_one(user_books)
+        users_books = jsonable_encoder(user_books)
+        user_books = await add_or_update_users_books(users_books)
         return {"message": "Add book to user's books list success", 'user_books': user_books}
 
 
-@app.put('/api/user/{userid}/books/{isbn}',
+@app.put('/api/user/{id}/books/',
          response_model=UpdateUserBooks,
          status_code=status.HTTP_201_CREATED,
          response_description='Update book to user\'s books list and some comments'
          )
-async def update_book_to_user_books_list(userid: str, isbn: str, user_books: UserBooks):
+async def update_book_to_user_books_list(id: str, user_books: UserBooks = Body(...)):
     """
     Update book to user's books list
     :return: UserBooks
     """
     # if no user, return 404
 
-    user = await users_collection.find_one(id=userid)
-    if not user:
-        return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
-
-    book = await books_collection.find_one({"isbn": isbn})
-    if not book:
-        return {"message": "Book not found"}, status.HTTP_404_NOT_FOUND
+    if not await users_books_collection.find_one({"_id": id}):
+        return {"message": "book not found"}, status.HTTP_404_NOT_FOUND
     else:
-        user_books = await users_books_collection.find_one_and_update({"userid": userid, "isbn": isbn}, user_books)
-
+        user_books = jsonable_encoder(user_books)
+        user_books = await add_or_update_users_books(user_books)
         return {"message": "Update book to user's books list success", 'user_books': user_books}
 
 
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run("main:app", host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8080)

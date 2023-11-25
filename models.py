@@ -198,7 +198,7 @@ class UserBooks(BaseModel):
     user_id: str = Field(...)
     isbn: str = Field(...)
     title: str = Field(...)
-    auothor: str = Field(...)
+    author: str = Field(...)
     year: str = Field(...)
     image: str = Field(...)
     description: str = Field(...)
@@ -211,7 +211,7 @@ class UserBooks(BaseModel):
         "json_schema_extra": {
             "example": {
                 "user_id": "123456",
-                "isbn": "9781593275846",
+                "isbn": "9781593276614",
                 "title": "Eloquent JavaScript, Second Edition",
                 "author": "Marijn Haverbeke",
                 "year": 2014,

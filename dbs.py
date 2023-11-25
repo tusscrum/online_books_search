@@ -23,7 +23,7 @@ import os
 import motor.motor_asyncio
 
 from conf import MONGODB_URL
-from control import helper_user
+from control import helper_user, helper_user_books
 
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ.get('MONGODB_URL') or MONGODB_URL, tls=True,
                                                 tlsAllowInvalidCertificates=True)
@@ -49,3 +49,25 @@ async def add_user(user: dict) -> dict:
 
     new_user = await users_collection.find_one({"_id": result.inserted_id})
     return helper_user(new_user)
+
+
+async def add_or_update_users_books(user_books: dict) -> dict:
+    """
+    Add user's books
+    :param user_books: dict
+    :return: dict
+    """
+    exit_user_books = await users_books_collection.find_one({"user_id": user_books['user_id'],
+                                                             "book_id": user_books['book_id']})
+    if exit_user_books:
+        await users_books_collection.update_one({"user_id": user_books['user_id'],
+                                                 "book_id": user_books['book_id']},
+                                                {"$set": {"status": user_books['status'],
+                                                          "rating": user_books['s'],
+                                                          "comment": user_books['comment']}})
+        new_user_books = await users_books_collection.find_one({"user_id": user_books['user_id'],
+                                                                "book_id": user_books['book_id']})
+    else:
+        result = await users_books_collection.insert_one(user_books)
+        new_user_books = await users_books_collection.find_one({"_id": result.inserted_id})
+    return helper_user_books(new_user_books)

@@ -120,3 +120,24 @@ def helper_user(user: dict) -> dict:
         "email": user.get('email'),
         "password": user.get('password')
     }
+
+
+def helper_user_books(user_books: dict, ) -> dict:
+    """
+    Helper user's books
+    :param user_books: dict
+    :return: dict
+    """
+    return {
+        "id": str(user_books.get('_id')),
+        "user_id": user_books.get('user_id'),
+        'isbn': user_books.get('isbn'),
+        'title': user_books.get('title'),
+        'author': user_books.get('author'),
+        'year': user_books.get('year'),
+        'image': user_books.get('image'),
+        'description': user_books.get('description'),
+        'status': user_books.get('status'),
+        'comment': user_books.get('comment'),
+        'rating': user_books.get('rating'),
+    }
