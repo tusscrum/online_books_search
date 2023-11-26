@@ -19,9 +19,8 @@ jobs:
         uses: actions/checkout@v2
       - name: set up environment
         run: |
-          touch conf.py
-          echo "MONGODB_URL = $MONGODB_URL" >> conf.py
-          echo "GOOGLE_BOOKS_API_KEY = $GOOGLE_BOOKS_API_KEY" >> conf.py
+          echo "MONGODB_URL = '$MONGODB_URL' \n"  >> conf.py
+          echo "GOOGLE_BOOKS_API_KEY = '$GOOGLE_BOOKS_API_KEY'" >> conf.py
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
