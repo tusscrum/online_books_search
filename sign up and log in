@@ -201,17 +201,21 @@ transform: translateY(-500px);
 
     <script>
         function validateSignUp() {
-            var password = document.getElementById("password").value;
-            var confirmPassword = document.getElementById("confirmPassword").value;
+        var userName = document.getElementsByName("txt")[0].value;
+        var email = document.getElementsByName("email")[0].value;
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
 
-            if (password.length < 6) {
-                showPopup("Password is not complicated enough, please enter 6-12 characters");
-            } else if (password !== confirmPassword) {
-                showPopup("Please reconfirm the password is the same twice");
-            } else {
-                showPopup("You have successfully registered!!");
-            }
+        if (!userName || !email || !password || !confirmPassword) {
+            showPopup("Please enter the user name, email, password, and confirm password.");
+        } else if (password.length < 6) {
+            showPopup("Password is not complicated enough, please enter 6-12 characters");
+        } else if (password !== confirmPassword) {
+            showPopup("Please reconfirm the password is the same twice");
+        } else {
+            showPopup("You have successfully registered!!");
         }
+    }
 
         function showPopup(message) {
             var popup = document.getElementById("popup");
