@@ -43,7 +43,7 @@ class Books(BaseModel):
                 "isbn": "9781593275846",
                 "title": "Eloquent JavaScript, Second Edition",
                 "author": "Marijn Haverbeke",
-                "year": 2014,
+                "year": "2014",
                 "image": "https://images-na.ssl-images-amazon.com/images/I/51u8ZRDCVoL._SX377_BO1,"
                          "204,203,200_.jpg",
                 "description": "JavaScript lies at the heart of almost every modern web "
@@ -58,6 +58,48 @@ class Books(BaseModel):
 
     class Settings:
         name = "books"
+
+
+class CreateBooks(BaseModel):
+    """
+    CreateBooks
+    """
+    user_id: str = Field(...)
+    isbn: str = Field(...)
+    title: str = Field(...)
+    author: str = Field(...)
+    year: str = Field(...)
+    image: str = Field(...)
+    description: str = Field(...)
+    status: str = Field(default='reading', choices=['reading', 'read', 'want to read'])
+    comment: str = Field(default='')
+    rating: int = Field(default=0, gt=0, lt=6)
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "user_id": "123456",
+                "isbn": "9781593275846",
+                "title": "Eloquent JavaScript, Second Edition",
+                "author": "Marijn Haverbeke",
+                "year": "2014",
+                "image": "https://images-na.ssl-images-amazon.com/images/I/51u8ZRDCVoL._SX377_BO1,"
+                         "204,203,200_.jpg",
+                "description": "JavaScript lies at the heart of almost every modern web "
+                               "application, from social apps "
+                               "to the newest browser-based games. Though simple for "
+                               "beginners to pick up and play with,"
+                               " JavaScript is a flexible, complex language that "
+                               "you can use to build full-scale "
+                               "applications.",
+                "status": "reading",
+                "comment": "good book",
+                "rating": 5
+            }
+        }
+
+        class Settings:
+            name = "user_books"
 
 
 class Response(BaseModel):

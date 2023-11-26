@@ -18,24 +18,24 @@
 #                   ┃┫┫  ┃┫┫
 #                   ┗┻┛  ┗┻┛
 # """
-# import os
-#
-# from pymongo import MongoClient
-#
-# try:
-#     from conf import MONGODB_URL
-# except:
-#     pass
-#
-# client = MongoClient(MONGODB_URL or os.environ.get('MONGODB_URL'), tls=True, tlsAllowInvalidCertificates=True)
-# db = client['test']  # database name
-# collection = db['books']
-#
-#
-# def test_mongodb():
-#     post = {'_id': 0, 'name': 'Jeff', 'score': 9}
-#     collection.insert_one(post)
-#     collection.find_one({'name': 'Jeff'})
-#     _ = collection.find_one({'name': 'Jeff'})
-#     collection.update_one({'name': 'Jeff'}, {'$set': {'score': 10}})
-#     collection.delete_one({'name': 'Jeff'})
+import os
+
+from pymongo import MongoClient
+
+try:
+    from conf import MONGODB_URL
+except:
+    pass
+
+client = MongoClient(MONGODB_URL or os.environ.get('MONGODB_URL'), tls=True, tlsAllowInvalidCertificates=True)
+db = client['test']  # database name
+collection = db['books']
+
+
+def test_mongodb():
+    post = {'_id': 0, 'name': 'Jeff', 'score': 9}
+    collection.insert_one(post)
+    collection.find_one({'name': 'Jeff'})
+    _ = collection.find_one({'name': 'Jeff'})
+    collection.update_one({'name': 'Jeff'}, {'$set': {'score': 10}})
+    collection.delete_one({'name': 'Jeff'})

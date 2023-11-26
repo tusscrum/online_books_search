@@ -60,7 +60,7 @@ async def search_books(query: str) -> list[dict]:
         async with session.get(
                 f"https://www.googleapis.com/books/v1/volumes?q={query}&key={GOOGLE_BOOKS_API_KEY}") as response:
             response = await response.json()
-            print(response)
+         
             response = await get_response_to_model(response.get('items', []))
 
             # save this item into monogoDB
@@ -140,4 +140,21 @@ def helper_user_books(user_books: dict, ) -> dict:
         'status': user_books.get('status'),
         'comment': user_books.get('comment'),
         'rating': user_books.get('rating'),
+    }
+
+
+def helper_books(book: dict) -> dict:
+    """
+    Helper books
+    :param book: dict
+    :return: dict
+    """
+    return {
+        "id": str(book.get('_id')),
+        'isbn': book.get('isbn'),
+        'title': book.get('title'),
+        'author': book.get('author'),
+        'year': book.get('year'),
+        'image': book.get('image'),
+        'description': book.get('description'),
     }
