@@ -1,4 +1,4 @@
-name: Test pipeline
+name: deploy pipeline
 
 on:
   push:
@@ -18,11 +18,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: set up environment
-      - shell:
-          run: |
-            touch conf.py
-               echo "MONGODB_URL = $MONGODB_URL" >> conf.py
-               echo "GOOGLE_BOOKS_API_KEY = $GOOGLE_BOOKS_API_KEY" >> conf.py
+        run: |
+          touch conf.py
+          echo "MONGODB_URL = $MONGODB_URL" >> conf.py
+          echo "GOOGLE_BOOKS_API_KEY = $GOOGLE_BOOKS_API_KEY" >> conf.py
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -76,10 +75,4 @@ jobs:
             cp ../conf.py conf.py
             kill -9 $(lsof -t -i:8080)
             nohup uvicorn main:app --host 0.0.0.0 --port 8080 &
-              
-            
-        
 
-      
-        
-        

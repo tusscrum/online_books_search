@@ -22,10 +22,7 @@ import os
 
 from pymongo import MongoClient
 
-try:
-    from conf import MONGODB_URL
-except:
-    pass
+from conf import MONGODB_URL
 
 client = MongoClient(MONGODB_URL or os.environ.get('MONGODB_URL'), tls=True, tlsAllowInvalidCertificates=True)
 db = client['test']  # database name

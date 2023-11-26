@@ -5,18 +5,13 @@ from fastapi.encoders import jsonable_encoder
 from fastapi_pagination import Page, Params, paginate
 from starlette import status
 
-from dbs import users_books_collection, users_collection, add_or_update_users_books, add_user, \
+from control import get_book_info, search_books
+from dbs import users_collection, add_or_update_users_books, add_user, \
     fetch_all_books, add_books, fetch_one_user, fetch_one_book, fetch_all_users_books, fetch_one_user_by_id, \
     fetch_one_user_books, update_users_books
+from models import Books, UserBooks, UserRegister, UserLogin, CreateBooks
 
 # disable_installed_extensions_check()
-
-try:
-    from conf import MONGODB_URL
-except:
-    pass
-from control import get_book_info, search_books
-from models import Books, UserBooks, UserRegister, UserLogin, CreateBooks
 
 app = FastAPI(
     title="Bookstore",
@@ -111,20 +106,20 @@ async def get_user_books_list(userid: str, parqms: Params = Depends()):
     return paginate(user_books_list, parqms)
 
 
-@app.get('/api/user/books/',
-         response_model=Page[UserBooks],
-         response_model_exclude_unset=True,
-         response_model_exclude_defaults=True,
-         status_code=status.HTTP_200_OK,
-         response_description='Get user\'s books list'
-         )
-async def get_user_books_list(parqms: Params = Depends()):
-    """
-    Get user's books list
-    :return: Page [UserBooks]
-    """
-    user_books_list = await users_books_collection.find().to_list(100)
-    return paginate(user_books_list, parqms)
+# @app.get('/api/user/books/',
+#          response_model=Page[UserBooks],
+#          response_model_exclude_unset=True,
+#          response_model_exclude_defaults=True,
+#          status_code=status.HTTP_200_OK,
+#          response_description='Get user\'s books list'
+#          )
+# async def get_user_books_list(parqms: Params = Depends()):
+#     """
+#     Get user's books list
+#     :return: Page [UserBooks]
+#     """
+#     user_books_list = await users_books_collection.find().to_list(100)
+#     return paginate(user_books_list, parqms)
 
 
 @app.post('/api/user/{userid}/books',

@@ -23,10 +23,7 @@ import os
 
 import aiohttp
 
-try:
-    from conf import MONGODB_URL, GOOGLE_BOOKS_API_KEY
-except:
-    pass
+from conf import GOOGLE_BOOKS_API_KEY
 
 GOOGLE_BOOKS_API_KEY = os.getenv('GOOGLE_BOOKS_API_KEY') or GOOGLE_BOOKS_API_KEY
 
@@ -60,10 +57,7 @@ async def search_books(query: str) -> list[dict]:
         async with session.get(
                 f"https://www.googleapis.com/books/v1/volumes?q={query}&key={GOOGLE_BOOKS_API_KEY}") as response:
             response = await response.json()
-         
             response = await get_response_to_model(response.get('items', []))
-
-            # save this item into monogoDB
             return response
 
 
