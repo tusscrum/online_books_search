@@ -1,5 +1,3 @@
-# create a database to monogoDB
-
 from fastapi import FastAPI, Depends, Body
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,7 +7,7 @@ from starlette import status
 from control import get_book_info, search_books
 from dbs import users_collection, add_or_update_users_books, add_user, \
     fetch_all_books, add_books, fetch_one_user, fetch_one_book, fetch_all_users_books, fetch_one_user_by_id, \
-    fetch_one_user_books, update_users_books
+    update_users_books
 from models import Books, UserBooks, UserRegister, UserLogin, CreateBooks
 
 # disable_installed_extensions_check()
@@ -165,7 +163,7 @@ async def update_book_to_user_books_list(id: str, user_books: CreateBooks = Body
     """
     # if no user, return 404
 
-    book = fetch_one_user_books(id)
+    book = await fetch_one_book(user_books.isbn)
     if not book:
         return {"message": "book not found"}, status.HTTP_404_NOT_FOUND
     else:

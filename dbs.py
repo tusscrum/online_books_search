@@ -85,8 +85,12 @@ async def add_user(user: dict) -> dict:
 
 
 async def fetch_one_user(username: str) -> dict:
-    find_user = await users_collection.find_one({"username": username}) \
-                or await users_collection.find_one({"email": username})
+    try:
+        find_user = await users_collection.find_one({"username": username}) \
+                    or await users_collection.find_one({"email": username})
+    except Exception as e:
+        print(e)
+        find_user = None
     if find_user:
         return helper_user(find_user)
 
