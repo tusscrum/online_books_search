@@ -163,6 +163,37 @@ nav ul li a:hover {
 
 }
 
+my-book-profile {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    margin-top: 20px;
+}
+
+.my-book-profile img {
+    width: 120px;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px;
+    border-radius: 5px;
+}
+
+.my-book-profile h3 {
+    color: #333;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.my-book-profile hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+}
+
+/* Book profile styles */
+
+
 .book-profile {
     flex: 0 0 auto;
     border: 1px solid #ddd;
