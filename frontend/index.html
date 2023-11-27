@@ -63,7 +63,7 @@ footer {
 
         /* Styles for the search button */
         #search-button {
-            padding: 10px;
+            padding: 7.2px;
             background: #f0f0f0;
             border: 2px solid #ccc;
             border-left: none; /* Ensure the button aligns with the input */
@@ -140,6 +140,15 @@ footer {
             line-height: 1.6;
             color: #333;
             background-color: #f4f4f4;
+        }
+
+
+        /* Structural styles */
+        header {
+            background-image:url(images/BackgroundBar.png);
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
         }
 
 
@@ -288,21 +297,7 @@ footer {
 <footer>
     <p>&copy; 2023 Bookstore. All rights reserved.</p>
 </footer>
- <!-- Login Form Section (from login.html) -->
- <div id="loginForm" class="modal">
-    <div class="login">
-        <form action="https://books.dehome.top/" method="post">
-            <label for="chk" aria-hidden="true">Login</label>
-            <input type="email" name="email" placeholder="Email" required="" autocomplete="off">
-            <div class="password-container">
-                <input type="password" name="password" id="loginPassword" placeholder="Password" required="">
-                <span class="eye" onclick="togglePassword('loginPassword')">👁️</span>
-            </div>
-            <button>Login</button>
-        </form>
-    </div>
-    <span class="close" onclick="closeLoginForm()">×</span>
-</div>
+
 <script>
     
     document.addEventListener('DOMContentLoaded', function () {
