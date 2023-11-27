@@ -5,10 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookstore - Explore Books</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-        }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    background-image: url('path_to_your_background_image.jpg'); /* Add a background image */
+    background-size: cover; /* Ensure it covers the whole page */
+    background-attachment: fixed; /* Fixed background */
+}
+header {
+    background-color: rgba(51, 51, 51, 0.9); /* Slightly transparent */
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+main {
+    background-color: rgba(255, 255, 255, 0.8); /* Light background for main content */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    margin: 20px; /* Spacing from the edges */
+}
+
+footer {
+    background-color: rgba(51, 51, 51, 0.9); /* Slightly transparent */
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+
+
+
 
 
         /* Styles for the search bar container */
@@ -109,27 +142,7 @@
             background-color: #f4f4f4;
         }
 
-        /* Structural styles */
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem 0;
-            text-align: center;
-        }
 
-        main {
-            padding: 20px;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 1rem 0;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
 
         /* Navigation styling */
         nav ul {
@@ -260,6 +273,7 @@
             <i class="dark-mode-icon">🌙</i>
         </button>
     </div>
+    <button id="Login">Login</button>
 </header>
 
 <main>
@@ -274,8 +288,23 @@
 <footer>
     <p>&copy; 2023 Bookstore. All rights reserved.</p>
 </footer>
-
+ <!-- Login Form Section (from login.html) -->
+ <div id="loginForm" class="modal">
+    <div class="login">
+        <form action="https://books.dehome.top/" method="post">
+            <label for="chk" aria-hidden="true">Login</label>
+            <input type="email" name="email" placeholder="Email" required="" autocomplete="off">
+            <div class="password-container">
+                <input type="password" name="password" id="loginPassword" placeholder="Password" required="">
+                <span class="eye" onclick="togglePassword('loginPassword')">👁️</span>
+            </div>
+            <button>Login</button>
+        </form>
+    </div>
+    <span class="close" onclick="closeLoginForm()">×</span>
+</div>
 <script>
+    
     document.addEventListener('DOMContentLoaded', function () {
         const booksDisplay = document.getElementById('books-display');
         const searchButton = document.getElementById('search-button');
