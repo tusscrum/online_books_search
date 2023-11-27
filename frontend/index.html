@@ -88,7 +88,7 @@
                 myBooksDisplay.innerHTML = '<h2>You have no books yet!</h2>';
                 return;
             }
-            books = books.items;
+            books = books
             myBooksDisplay.innerHTML = '<h2>My Books</h2>';
             console.log(books);
             books.forEach(book => {
