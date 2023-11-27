@@ -21,13 +21,30 @@
             <span class="search-icon">&#x1F50D;</span> <!-- Unicode magnifying glass -->
         </button>
     </div>
-    <a href = "login.html" id = "Login">Login</a>
+        <!--if localstore get a user then hidden the login -->
+
+
+    <div id="login" class="login">
+        <button onclick="window.location.href='login.html'">Login</button>
+    </div>
+
+        <div id="logout" class="logout">
+            <button onclick="logout()">Logout</button>
+        </div>
+        <!-- show  username from localstorege -->
+        <div id="username" class="username">
+            <p id="username-text"></p>
+
+
+
+
+
     <div class="dark-mode-toggle">
         <button id="dark-mode-button">
             <i class="dark-mode-icon">🌙</i>
         </button>
+
     </div>
-    
 </header>
 
 <main>
@@ -154,7 +171,7 @@
                alert('Please login first!');
             }
             const userId = user.id;
-            const apiUrl = `/api/users/${userId}/books`; // Replace with your actual API endpoint
+            const apiUrl = `/api/user/${userId}/books`; // Replace with your actual API endpoint
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
@@ -165,9 +182,29 @@
                     console.error("Error fetching user's books:", error);
                 });
         }
+        function hideLogin() {
+            const login = document.getElementById('login');
+            const logout = document.getElementById('logout');
+            const username = document.getElementById('username-text');
+            if (localStorage.getItem('user')) {
+                username.textContent = JSON.parse(localStorage.getItem('user')).username;
+                login.hidden = true;
+                logout.hidden = false;
+
+            }
+
+            login.hidden = false;
+            logout.hidden = true;
+            username.textContent = '';
+        }
+        function logout() {
+            localStorage.removeItem('user');
+            hideLogin();
+        }
         // Initialize book display
         fetchBooks();
         fetchMyBooks();
+        hideLogin();
     });
 </script>
 <div id="books-container"></div>
