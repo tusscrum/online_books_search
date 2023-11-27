@@ -151,7 +151,7 @@
            // get localstorage
             const user = JSON.parse(localStorage.getItem('user'));
             if (!user) {
-                return;
+               alert('Please login first!');
             }
             const userId = user.id;
             const apiUrl = `/api/users/${userId}/books`; // Replace with your actual API endpoint
@@ -159,7 +159,7 @@
                 .then(response => response.json())
                 .then(data => {
                     // Display books
-                    displayBooks(data.items);
+                    displayMyBooks(data.items);
                 })
                 .catch(error => {
                     console.error("Error fetching user's books:", error);
