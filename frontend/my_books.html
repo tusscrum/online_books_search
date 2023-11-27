@@ -132,12 +132,13 @@
 
             // Display books dynamically
             books.forEach(book => {
-                bookElement.addEventListener('click', function () {
-                    displayBookDetail(book);
-                });
+                // add a click event to the book container
+
                 const bookContainer = document.createElement("div");
                 bookContainer.classList.add("book-container");
-
+                bookContainer.addEventListener('click', function () {
+                    displayBookDetail(book);
+                });
                 const titleElement = document.createElement("h3");
                 titleElement.textContent = book.title;
 

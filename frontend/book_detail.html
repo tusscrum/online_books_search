@@ -102,7 +102,7 @@
             formData.forEach((value, key) => {
                 jsonData[key] = value;
             });
-
+            console.log(jsonData);
             // Make POST request to add book to user's collection
             fetch(`https://books.dehome.top/api/user/${jsonData.user_id}/books`, {
                 method: 'POST',
@@ -111,6 +111,7 @@
                 },
                 body: JSON.stringify(jsonData),
             })
+
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
