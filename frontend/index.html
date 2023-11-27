@@ -150,6 +150,9 @@
         function fetchMyBooks() {
            // get localstorage
             const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                return;
+            }
             const userId = user.id;
             const apiUrl = `/api/users/${userId}/books`; // Replace with your actual API endpoint
             fetch(apiUrl)
@@ -162,9 +165,9 @@
                     console.error("Error fetching user's books:", error);
                 });
         }
-        fetchMyBooks();
         // Initialize book display
         fetchBooks();
+        fetchMyBooks();
     });
 </script>
 <div id="books-container"></div>
