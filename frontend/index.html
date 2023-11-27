@@ -65,6 +65,10 @@
 </footer>
 
 <script>
+    function logout() {
+        localStorage.removeItem('user');
+        hideLogin();
+    }
     document.addEventListener('DOMContentLoaded', function () {
         const booksDisplay = document.getElementById('books-display');
         const myBooksDisplay = document.getElementById('my-books-display');
@@ -203,10 +207,7 @@
             }
 
         }
-        function logout() {
-            localStorage.removeItem('user');
-            hideLogin();
-        }
+
         // Initialize book display
         fetchBooks();
         fetchMyBooks();
