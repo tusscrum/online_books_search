@@ -80,15 +80,17 @@
                 .catch(error => console.error('Error fetching books:', error));
         }
         function displayMyBooks(books) {
+            if (books.length === 0) {
+                myBooksDisplay.innerHTML = '<h2>You have no books yet!</h2>';
+                return;
+            }
             books = books.items;
             myBooksDisplay.innerHTML = '<h2>My Books</h2>';
+            console.log(books);
             books.forEach(book => {
+
                 const bookElement = document.createElement('div');
-                bookElement.className = 'my-book-profile';
-                // create a function to get the detail of the book
-                bookElement.addEventListener('click', function () {
-                    displayBookDetail(book);
-                });
+                bookElement.className = 'book-profile';
                 bookElement.innerHTML = `
                         <img src="${book.image}" alt="${book.title}">
                         <h3>${book.title}</h3>
@@ -96,11 +98,10 @@
                         <p>ISBN: ${book.isbn}</p>
                         <p>Year: ${book.year}</p>
                         <p>${book.description}</p>
-                        <p>Read Status: ${book.status}</p>
-                        <p>Comment: ${book.comment}</p>
-                        <p>Rating: ${book.rating}</p>`;
-
-                booksDisplay.appendChild(bookElement);
+                        <p>Status: ${book.status}</p>
+                        <p>rating: ${book.rating}</p>
+                        <p>comment: ${book.comment}</p>
+`;
             });
         }
         // Function to display books
