@@ -209,8 +209,9 @@
         }
 
         .book-profile:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
         }
 
         /* Book information styles */
@@ -317,6 +318,10 @@
             books.forEach(book => {
                 const bookElement = document.createElement('div');
                 bookElement.className = 'book-profile';
+                // create a function to get the detail of the book
+                bookElement.addEventListener('click', function () {
+                    displayBookDetail(book);
+                });
                 bookElement.innerHTML = `
                         <img src="${book.image}" alt="${book.title}">
                         <h3>${book.title}</h3>
@@ -324,9 +329,24 @@
                         <p>ISBN: ${book.isbn}</p>
                         <p>Year: ${book.year}</p>
                         <p>${book.description}</p>`;
+
                 booksDisplay.appendChild(bookElement);
             });
         }
+
+        function displayBookDetail(book) {
+            const bookElement = document.createElement('div');
+            bookElement.className = 'book-profile';
+            bookElement.innerHTML = `
+                        <img src="${book.image}" alt="${book.title}">
+                        <h3>${book.title}</h3>
+                        <p>Author: ${book.author}</p>
+                        <p>ISBN: ${book.isbn}</p>
+                        <p>Year: ${book.year}</p>
+                        <p>${book.description}</p>`;
+            booksDisplay.appendChild(bookElement);
+        }
+
 
         // Event listener for search functionality
         searchButton.addEventListener('click', function () {
