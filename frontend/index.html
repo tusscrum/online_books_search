@@ -50,9 +50,13 @@
 <main>
     <section id="books">
 
+        <div id="my-books-display">
+            <!-- Dynamically generated book profiles will be inserted here by JavaScript -->
+        </div>
         <div id="books-display">
             <!-- Dynamically generated book profiles will be inserted here by JavaScript -->
         </div>
+
     </section>
 </main>
 
@@ -63,6 +67,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const booksDisplay = document.getElementById('books-display');
+        const myBooksDisplay = document.getElementById('my-books-display');
         const searchButton = document.getElementById('search-button');
         const searchQuery = document.getElementById('search-query');
         const darkModeButton = document.getElementById('dark-mode-button');
