@@ -187,8 +187,7 @@ async def login(user: UserLogin = Body(...)):
     finded_user = await fetch_one_user(user.username)
     if finded_user is None:
         return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
-
-    if finded_user.get('password') == user.password:
+    if finded_user.get('password', '') == user.password:
         # set session
         return {"message": "Login success", 'user': finded_user}
     else:

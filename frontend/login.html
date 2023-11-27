@@ -287,11 +287,12 @@ transform: translateY(-500px);
                 headers: {
                     "Content-Type": "application/json"
                 },
-                credentials: "include",
+
                 body: JSON.stringify(data)
             })
                 .then(response => response.json())
                 .then(result => {
+                    console.log(result);
                     if ('user' in result) {
                         // setlocalstorage to store the user
                         localStorage.setItem("user", JSON.stringify(result.user));
@@ -299,7 +300,9 @@ transform: translateY(-500px);
                         // Redirect to the login page
                         window.location.href = "index.html";
                     } else {
-                        alert(result.message);
+                        //[{"message":"User not found"},404]
+
+                        alert(result[0].message);
                     }
                 })
                 .catch(error => {
