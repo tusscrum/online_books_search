@@ -163,7 +163,7 @@ nav ul li a:hover {
 
 }
 
-my-book-profile {
+.my-book-profile {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
@@ -189,6 +189,11 @@ my-book-profile {
     transform: translateY(-10px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 
+}
+
+.my-book-profile p {
+    font-size: 0.9rem;
+    color: #666;
 }
 
 /* Book profile styles */
