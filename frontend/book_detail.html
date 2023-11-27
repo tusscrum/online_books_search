@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+</head>
+
+<body>
+
+<h1>Book Details</h1>
+
+<div id="book-details-container">
+    <!-- Display book details here using JavaScript -->
+</div>
+<h2>Add to Your Books</h2>
+<form id="add-book-form">
+    <!-- Hidden input to store the user ID -->
+    <input type="hidden" id="user-id" name="user_id" value="">
+
+    <!-- Hidden input to store the ISBN -->
+    <input type="hidden" id="isbn" name="isbn" value="9781593275846">
+
+    <!-- Rating -->
+    <label for="rating">Rating:</label>
+    <input type="number" id="rating" name="rating" min="1" max="5" required>
+
+    <!-- Status -->
+    <label for="status">Status:</label>
+    <select id="status" name="status" required>
+        <option value="reading">reading</option>
+        <option value="completed">read</option>
+        <option value="wishlist">want to read</option>
+    </select>
+
+    <!-- Comment -->
+    <label for="comment">Comment:</label>
+    <textarea id="comment" name="comment" rows="4"></textarea>
+
+    <!-- Submit button -->
+    <button type="submit">Add to Your Books</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fetch the book details from the API
+        const isbn = new URLSearchParams(window.location.search).get("isbn");
+        const apiUrl = `/api/books/${isbn}`; // Replace with your actual API endpoint
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(book => {
+                // Display book details dynamically using JavaScript
+                const bookDetailsContainer = document.getElementById("book-details-container");
+
+                // Create HTML elements for each piece of information
+                const titleElement = document.createElement("h2");
+                titleElement.textContent = book.title;
+
+                const authorElement = document.createElement("p");
+                authorElement.textContent = `Author: ${book.author}`;
+
+                const yearElement = document.createElement("p");
+                yearElement.textContent = `Year: ${book.year}`;
+
+                const descriptionElement = document.createElement("p");
+                descriptionElement.textContent = book.description;
+
+                const imageElement = document.createElement("img");
+                imageElement.src = book.image;
+                imageElement.alt = "Book Cover";
+
+                // Append elements to the container
+                bookDetailsContainer.appendChild(titleElement);
+                bookDetailsContainer.appendChild(authorElement);
+                bookDetailsContainer.appendChild(yearElement);
+                bookDetailsContainer.appendChild(descriptionElement);
+                bookDetailsContainer.appendChild(imageElement);
+
+                // Populate hidden input values for user ID and ISBN
+                user_id = JSON.parse(localStorage.getItem("user")).id;
+                document.getElementById("user-id").value = user_id; // Replace with actual user ID
+                document.getElementById("isbn").value = book.isbn;
+            })
+            .catch(error => {
+                console.error("Error fetching book details:", error);
+            });
+
+        // Handle form submission
+        document.getElementById("add-book-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Collect form data
+            const formData = new FormData(this);
+
+            // Convert form data to JSON
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            // Make POST request to add book to user's collection
+            fetch(`/api/user/${jsonData.user_id}/books`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('Book added successfully!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error adding the book. Please try again.');
+                });
+        });
+    });
+</script>
+
+<script>
+    // Fetch the book details from the API
+    const isbn = new URLSearchParams(window.location.search).get("isbn");
+    const apiUrl = `/api/books/${isbn}`; // Replace with your actual API endpoint
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(book => {
+            // Display book details dynamically using JavaScript
+            const bookDetailsContainer = document.getElementById("book-details-container");
+
+            // Create HTML elements for each piece of information
+            const titleElement = document.createElement("h2");
+            titleElement.textContent = book.title;
+
+            const authorElement = document.createElement("p");
+            authorElement.textContent = `Author: ${book.author}`;
+
+            const yearElement = document.createElement("p");
+            yearElement.textContent = `Year: ${book.year}`;
+
+            const descriptionElement = document.createElement("p");
+            descriptionElement.textContent = book.description;
+
+            const imageElement = document.createElement("img");
+            imageElement.src = book.image;
+            imageElement.alt = "Book Cover";
+
+            // Append elements to the container
+            bookDetailsContainer.appendChild(titleElement);
+            bookDetailsContainer.appendChild(authorElement);
+            bookDetailsContainer.appendChild(yearElement);
+            bookDetailsContainer.appendChild(descriptionElement);
+            bookDetailsContainer.appendChild(imageElement);
+        })
+        .catch(error => {
+            console.error("Error fetching book details:", error);
+        });
+</script>
+
+</body>
+
+</html>
+
+

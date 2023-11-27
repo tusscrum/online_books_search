@@ -234,6 +234,63 @@ transform: translateY(-500px);
             var input = document.getElementById(inputId);
             input.type = (input.type === "password") ? "text" : "password";
         }
+
+       // registe button to post a request to api/register
+        const signupForm = document.getElementById("signupForm");
+        signupForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const formData = new FormData(signupForm);
+            const data = Object.fromEntries(formData);
+            fetch("/api/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        // setlocalstorage to store the user
+                        localStorage.setItem("user", JSON.stringify(result.user));
+                        // Redirect to the login page
+                        window.location.href = "/";
+                    } else {
+                        alert(result.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
+        // login button to post a request to api/login
+        const loginForm = document.getElementById("loginForm");
+        loginForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const formData = new FormData(loginForm);
+            const data = Object.fromEntries(formData);
+            fetch("/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        // setlocalstorage to store the user
+                        localStorage.setItem("user", JSON.stringify(result.user));
+                        // Redirect to the home page
+                        window.location.href = "/";
+                    } else {
+                        alert(result.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
     </script>
 </body>
 </html>

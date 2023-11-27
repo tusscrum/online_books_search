@@ -247,6 +247,11 @@
 </head>
 <body>
 <header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Explore Books</a></li>
+            <li><a href="my_books.html">My Books</a></li>
+        </ul>
     <h1>Bookstore</h1>
     <!-- Search bar container -->
     <div class="search-wrapper">
@@ -266,7 +271,7 @@
 
 <main>
     <section id="books">
-        <h2>Our Collection</h2>
+
         <div id="books-display">
             <!-- Dynamically generated book profiles will be inserted here by JavaScript -->
         </div>
@@ -291,11 +296,36 @@
                 .then(books => displayBooks(books))
                 .catch(error => console.error('Error fetching books:', error));
         }
+        function displayMyBooks(books) {
+            books = books.items;
+            booksDisplay.innerHTML = '<h2>My Books</h2>';
+            books.forEach(book => {
+                const bookElement = document.createElement('div');
+                bookElement.className = 'book-profile';
+                // create a function to get the detail of the book
+                bookElement.addEventListener('click', function () {
+                    displayBookDetail(book);
+                });
+                bookElement.innerHTML = `
+                        <img src="${book.image}" alt="${book.title}">
+                        <h3>${book.title}</h3>
+                        <p>Author: ${book.author}</p>
+                        <p>ISBN: ${book.isbn}</p>
+                        <p>Year: ${book.year}</p>
 
+                        <p>${book.description}</p>
+                        <p>Read Status: ${book.status}</p>
+                        <p>Comment: ${book.comment}</p>
+                        <p>Rating: ${book.rating}</p>
+            `;
+
+                booksDisplay.appendChild(bookElement);
+            });
+        }
         // Function to display books
         function displayBooks(books) {
             books = books.items;
-            booksDisplay.innerHTML = '';
+            booksDisplay.innerHTML = '<h2>Our Collection</h2>';
             books.forEach(book => {
                 const bookElement = document.createElement('div');
                 bookElement.className = 'book-profile';
@@ -316,16 +346,9 @@
         }
 
         function displayBookDetail(book) {
-            const bookElement = document.createElement('div');
-            bookElement.className = 'book-profile';
-            bookElement.innerHTML = `
-                        <img src="${book.image}" alt="${book.title}">
-                        <h3>${book.title}</h3>
-                        <p>Author: ${book.author}</p>
-                        <p>ISBN: ${book.isbn}</p>
-                        <p>Year: ${book.year}</p>
-                        <p>${book.description}</p>`;
-            booksDisplay.appendChild(bookElement);
+            // goto a new page to display the detail of the book
+            window.location.href = `/book_detail?isbn=${book.isbn}`;
+
         }
 
 
@@ -363,7 +386,22 @@
                 ? '<i class="dark-mode-icon">☀️</i>'
                 : '<i class="dark-mode-icon">🌙</i>';
         });
-
+        function fetchMyBooks() {
+           // get localstorage
+            const user = JSON.parse(localStorage.getItem('user'));
+            const userId = user.id;
+            const apiUrl = `/api/users/${userId}/books`; // Replace with your actual API endpoint
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Display books
+                    displayBooks(data.items);
+                })
+                .catch(error => {
+                    console.error("Error fetching user's books:", error);
+                });
+        }
+        fetchMyBooks();
         // Initialize book display
         fetchBooks();
     });

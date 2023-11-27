@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Books</title>
+</head>
+
+<body>
+
+<h1>My Books</h1>
+
+<label for="status-filter">Filter by Status:</label>
+<select id="status-filter" onchange="filterBooks()">
+    <option value="all">All</option>
+    <!-- Dropdown options will be dynamically populated using JavaScript -->
+</select>
+
+<div id="books-list-container">
+    <!-- Display user's books here using JavaScript -->
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fetch user's books from the API
+        user = JSON.parse(localStorage.getItem("user"));
+        const userId = user.id;
+        const apiUrl = `/api/user/${userId}/books`; // Replace with your actual API endpoint
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Display user's books dynamically using JavaScript
+                const booksListContainer = document.getElementById("books-list-container");
+
+                // Populate the status filter dropdown
+                const statusFilterDropdown = document.getElementById("status-filter");
+                const uniqueStatusValues = [...new Set(data.items.map(item => item.status))];
+                uniqueStatusValues.forEach(status => {
+                    const option = document.createElement("option");
+                    option.value = status;
+                    option.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+                    statusFilterDropdown.appendChild(option);
+                });
+
+                // Display books
+                displayBooks(data.items);
+            })
+            .catch(error => {
+                console.error("Error fetching user's books:", error);
+            });
+
+        // Function to filter books based on status
+        window.filterBooks = function () {
+            const selectedStatus = document.getElementById("status-filter").value;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const filteredBooks = selectedStatus === "all" ?
+                        data.items :
+                        data.items.filter(book => book.status === selectedStatus);
+
+                    displayBooks(filteredBooks);
+                })
+                .catch(error => {
+                    console.error("Error fetching user's books:", error);
+                });
+        };
+
+        // Function to display books in the container
+        function displayBooks(books) {
+            const booksListContainer = document.getElementById("books-list-container");
+
+            // Clear previous content
+            booksListContainer.innerHTML = "";
+
+            // Display books dynamically
+            books.forEach(book => {
+                const bookContainer = document.createElement("div");
+                bookContainer.classList.add("book-container");
+
+                const titleElement = document.createElement("h3");
+                titleElement.textContent = book.title;
+
+                const authorElement = document.createElement("p");
+                authorElement.textContent = `Author: ${book.author}`;
+
+                const yearElement = document.createElement("p");
+                yearElement.textContent = `Year: ${book.year}`;
+
+                const descriptionElement = document.createElement("p");
+                descriptionElement.textContent = book.description;
+
+                const imageElement = document.createElement("img");
+                imageElement.src = book.image;
+                imageElement.alt = "Book Cover";
+
+                const statusElement = document.createElement("p");
+                statusElement.textContent = `Status: ${book.status}`;
+
+                const statusDropdown = document.createElement("select");
+                statusDropdown.id = "status-dropdown";
+                statusDropdown.onchange = function () {
+                    const selectedStatus = document.getElementById("status-dropdown").value;
+                    const jsonData = {
+                        status: selectedStatus
+                    };
+                    // Make PUT request to update book status
+                    fetch(`/api/user/${book.user_id}/books/${book.isbn}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(jsonData),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                            alert('Book status updated successfully!');
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error updating the book status. Please try again.');
+                        });
+                };
+
+                // Append elements to the container
+                bookContainer.appendChild(titleElement);
+                bookContainer.appendChild(authorElement);
+                bookContainer.appendChild(yearElement);
+                bookContainer.appendChild(descriptionElement);
+                bookContainer.appendChild(imageElement);
+                bookContainer.appendChild(statusElement);
+
+                // Append the book container to the list container
+                booksListContainer.appendChild(bookContainer);
+            });
+        }
+    });
+</script>
+
+<style>
+    .book-container {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+
+</body>
+
+</html>
