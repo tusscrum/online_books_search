@@ -192,10 +192,12 @@
                 logout.hidden = false;
 
             }
+            else {
+                login.hidden = false;
+                logout.hidden = true;
+                username.textContent = '';
+            }
 
-            login.hidden = false;
-            logout.hidden = true;
-            username.textContent = '';
         }
         function logout() {
             localStorage.removeItem('user');
