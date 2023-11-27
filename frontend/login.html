@@ -250,8 +250,7 @@ transform: translateY(-500px);
             })
                 .then(response => response.json())
                 .then(result => {
-                    console.log(result);
-                    if (result) {
+                    if ('user' in result) {
                         // setlocalstorage to store the user
                         localStorage.setItem("user", JSON.stringify(result.user));
                         // Redirect to the login page
@@ -280,7 +279,7 @@ transform: translateY(-500px);
             })
                 .then(response => response.json())
                 .then(result => {
-                    if (result.get('user')) {
+                    if ('user' in result) {
                         // setlocalstorage to store the user
                         localStorage.setItem("user", JSON.stringify(result.user));
                         alert("You have successfully logged in!")
