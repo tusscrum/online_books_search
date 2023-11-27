@@ -88,13 +88,11 @@
                 myBooksDisplay.innerHTML = '<h2>You have no books yet!</h2>';
                 return;
             }
-            books = books
             myBooksDisplay.innerHTML = '<h2>My Books</h2>';
             console.log(books);
             books.forEach(book => {
-
                 const bookElement = document.createElement('div');
-                bookElement.className = 'book-profile';
+                bookElement.className = 'my-book-profile';
                 bookElement.innerHTML = `
                         <img src="${book.image}" alt="${book.title}">
                         <h3>${book.title}</h3>
