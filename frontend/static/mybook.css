@@ -1,0 +1,64 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #5C6BC0;
+    margin-bottom: 20px; 
+}
+
+select, button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+button {
+    background-color: #5C6BC0;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px; 
+}
+
+button:hover {
+    background-color: #3F51B5;
+}
+
+
+#books-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 20px; 
+}
+
+.book-container {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.book-container h3 {
+    margin-top: 0;
+}
+
+.book-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+
+@media (max-width: 768px) {
+    .book-container {
+        grid-template-columns: 1fr;
+    }
+}
