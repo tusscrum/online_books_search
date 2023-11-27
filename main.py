@@ -2,6 +2,7 @@
 
 from fastapi import FastAPI, Depends, Body
 from fastapi.encoders import jsonable_encoder
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import Page, Params, paginate
 from starlette import status
 
@@ -21,6 +22,13 @@ app = FastAPI(
     redoc_url="/api/redocs",
     openapi_url="/api/openapi.json",
 
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

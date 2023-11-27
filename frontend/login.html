@@ -270,11 +270,12 @@ transform: translateY(-500px);
             const formData = new FormData(loginForm);
             const data = Object.fromEntries(formData);
             console.log(data);
-            fetch("/api/login", {
+            fetch("https://books.dehome.top/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
+                credentials: "include",
                 body: JSON.stringify(data)
             })
                 .then(response => response.json())
