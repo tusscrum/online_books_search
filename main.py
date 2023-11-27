@@ -184,7 +184,7 @@ async def login(user: UserLogin = Body(...)):
     """
     # if no user, return 404
 
-    finded_user = await fetch_one_user(user.username) or await fetch_one_user(user.email)
+    finded_user = await fetch_one_user(user.username)
     if finded_user is None:
         return {"message": "User not found"}, status.HTTP_404_NOT_FOUND
 
