@@ -22,31 +22,85 @@
 </div>
 
 <script>
-     function fetchMyBooks() {
-           // get localstorage
-            const user = JSON.parse(localStorage.getItem('user'));
-            if (!user) {
-               alert('Please login first!');
-                window.location.href = "index.html";              
-            }
-            const userId = user.id;
-            const apiUrl = `/api/user/${userId}/books`; // Replace with your actual API endpoint
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    // Display books
-                    displayMyBooks(data.items);
-                })
-                .catch(error => {
-                    console.error("Error fetching user's books:", error);
-                });
+
+    function fetchMyBooks() {
+        // get localstorage
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            alert('Please login first!');
+            window.location.href = "index.html";
         }
-        fetchMyBooks();
+        const userId = user.id;
+        const apiUrl = `https://books.dehome.top/api/user/${userId}/books`; // Replace with your actual API endpoint
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Display books
+                displayMyBooks(data.items);
+            })
+            .catch(error => {
+                console.error("Error fetching user's books:", error);
+            });
+    }
+
+    function displayMyBooks(books) {
+        const booksListContainer = document.getElementById("books-list-container");
+
+        // Clear previous content
+        booksListContainer.innerHTML = "";
+
+        // Display books dynamically
+        books.forEach(book => {
+            const bookContainer = document.createElement("div");
+            bookContainer.classList.add("book-container");
+
+            const titleElement = document.createElement("h3");
+            titleElement.textContent = book.title;
+
+            const authorElement = document.createElement("p");
+            authorElement.textContent = `Author: ${book.author}`;
+
+            const yearElement = document.createElement("p");
+            yearElement.textContent = `Year: ${book.year}`;
+
+            const descriptionElement = document.createElement("p");
+            descriptionElement.textContent = book.description;
+
+            const imageElement = document.createElement("img");
+            imageElement.src = book.image;
+            imageElement.alt = "Book Cover";
+
+            const statusElement = document.createElement("p");
+            // if books tatues is null, set it to "reading"
+            statusElement.textContent = book.status ? `Status: ${book.status}` : "Status: reading";
+
+            const ratingElement = document.createElement("p");
+            ratingElement.textContent = `Rating: ${book.rating}`;
+
+            const commentElement = document.createElement("p");
+            commentElement.textContent = `Comment: ${book.comment}`;
+            // Append elements to the container
+            bookContainer.appendChild(titleElement);
+            bookContainer.appendChild(authorElement);
+            bookContainer.appendChild(yearElement);
+            bookContainer.appendChild(descriptionElement);
+            bookContainer.appendChild(imageElement);
+            bookContainer.appendChild(statusElement);
+            bookContainer.appendChild(ratingElement);
+            bookContainer.appendChild(commentElement);
+
+
+            // Append the book container to the list container
+            booksListContainer.appendChild(bookContainer);
+        });
+    }
+
+
     document.addEventListener('DOMContentLoaded', function () {
         // Fetch user's books from the API
         user = JSON.parse(localStorage.getItem("user"));
         const userId = user.id;
-        const apiUrl = `/api/user/${userId}/books`; // Replace with your actual API endpoint
+        const apiUrl = `https://books.dehome.top/api/user/${userId}/books`; // Replace with your actual API endpoint
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
@@ -70,24 +124,6 @@
                 console.error("Error fetching user's books:", error);
             });
 
-        // Function to filter books based on status
-        window.filterBooks = function () {
-            const selectedStatus = document.getElementById("status-filter").value;
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    const filteredBooks = selectedStatus === "all" ?
-                        data.items :
-                        data.items.filter(book => book.status === selectedStatus);
-
-                    displayBooks(filteredBooks);
-                })
-                .catch(error => {
-                    console.error("Error fetching user's books:", error);
-                });
-        };
-
-        // Function to display books in the container
         function displayBooks(books) {
             const booksListContainer = document.getElementById("books-list-container");
 
@@ -96,6 +132,9 @@
 
             // Display books dynamically
             books.forEach(book => {
+                bookElement.addEventListener('click', function () {
+                    displayBookDetail(book);
+                });
                 const bookContainer = document.createElement("div");
                 bookContainer.classList.add("book-container");
 
@@ -118,32 +157,6 @@
                 const statusElement = document.createElement("p");
                 statusElement.textContent = `Status: ${book.status}`;
 
-                const statusDropdown = document.createElement("select");
-                statusDropdown.id = "status-dropdown";
-                statusDropdown.onchange = function () {
-                    const selectedStatus = document.getElementById("status-dropdown").value;
-                    const jsonData = {
-                        status: selectedStatus
-                    };
-                    // Make PUT request to update book status
-                    fetch(`/api/user/${book.user_id}/books/${book.isbn}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(jsonData),
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Success:', data);
-                            alert('Book status updated successfully!');
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Error updating the book status. Please try again.');
-                        });
-                };
-
                 // Append elements to the container
                 bookContainer.appendChild(titleElement);
                 bookContainer.appendChild(authorElement);
@@ -155,8 +168,35 @@
                 // Append the book container to the list container
                 booksListContainer.appendChild(bookContainer);
             });
+
+            function displayBookDetail(book) {
+                // goto a new page to display the detail of the book
+                window.location.href = `https://books.dehome.top/book_detail.html?isbn=${book.isbn}`;
+
+            }
         }
+
+        // Function to filter books based on status
+        window.filterBooks = function () {
+            const selectedStatus = document.getElementById("status-filter").value;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const filteredBooks = selectedStatus === "all" ?
+                        data.items :
+                        data.items.filter(book => book.status === selectedStatus);
+
+                    displayBooks(filteredBooks);
+                })
+                .catch(error => {
+                    console.error("Error fetching user's books:", error);
+                });
+        };
+
+        // Function to display books in the container
+
     });
+    fetchMyBooks();
 </script>
 
 <style>
