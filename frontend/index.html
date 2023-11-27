@@ -78,7 +78,7 @@
 
         // Function to fetch and display books
         function fetchBooks() {
-            fetch('/api/books_list')
+            fetch('https://books.dehome.top/api/books_list')
                 .then(response => response.json())
                 .then(books => displayBooks(books))
                 .catch(error => console.error('Error fetching books:', error));
