@@ -29,8 +29,10 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    allow_origin=["*"]
-
+    allow_origin=["*"],
+    allow_origin_regex='https?://.*',
+    expose_headers=["*"],
+    max_age=3600,
 )
 
 
