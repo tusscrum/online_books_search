@@ -250,7 +250,7 @@ transform: translateY(-500px);
             })
                 .then(response => response.json())
                 .then(result => {
-                    if (result.success) {
+                    if (result.get('user')) {
                         // setlocalstorage to store the user
                         localStorage.setItem("user", JSON.stringify(result.user));
                         // Redirect to the login page
@@ -279,10 +279,11 @@ transform: translateY(-500px);
             })
                 .then(response => response.json())
                 .then(result => {
-                    if (result.success) {
+                    if (result.get('user')) {
                         // setlocalstorage to store the user
                         localStorage.setItem("user", JSON.stringify(result.user));
-                        // Redirect to the home page
+                        alert("You have successfully logged in!")
+                        // Redirect to the login page
                         window.location.href = "index.html";
                     } else {
                         alert(result.message);
