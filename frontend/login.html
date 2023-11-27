@@ -39,7 +39,7 @@
      <div class="login">
         <form id="loginForm">
         <label for="chk" aria-hidden="true">Login</label>
-        <input type="username" name="username" placeholder="username or email" required="" autocomplete="off">
+        <input type="text" name="username" placeholder="User name or email" required="" autocomplete="on">
         <div class="password-container">
             <input type="password" name="password" id="loginPassword" placeholder="Password" required="">
             <span class="eye" onclick="togglePassword('loginPassword')">👁️</span>
@@ -269,6 +269,7 @@ transform: translateY(-500px);
             event.preventDefault();
             const formData = new FormData(loginForm);
             const data = Object.fromEntries(formData);
+            console.log(data);
             fetch("/api/login", {
                 method: "POST",
                 headers: {
