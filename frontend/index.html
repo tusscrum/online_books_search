@@ -107,6 +107,10 @@
                 books.forEach(book => {
                     const bookElement = document.createElement('div');
                     bookElement.className = 'my-book-profile';
+                    // navigte to the detail books
+                    bookElement.addEventListener('click', () => {
+                        window.location.href = `https://books.dehome.top/book_detail.html?isbn=${book.isbn}`;
+                    });
                     bookElement.innerHTML = `
                         <img src="${book.image}" alt="${book.title}">
                         <h3>${book.title}</h3>
