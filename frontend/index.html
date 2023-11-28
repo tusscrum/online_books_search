@@ -210,6 +210,10 @@
                     console.error("Error fetching user's books:", error);
                 });
         }
+        function logout() {
+    localStorage.removeItem('user');
+    hideLogin(); 
+}
         function hideLogin() {
             const login = document.getElementById('login');
             const logout = document.getElementById('logout');
