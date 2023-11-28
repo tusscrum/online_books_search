@@ -108,16 +108,34 @@
                 .then(books => displayBooks(books))
                 .catch(error => console.error('Error fetching books:', error));
         }
-        function displayMyBooks(books) {
-            if (books.length === 0) {
-                myBooksDisplay.innerHTML = '<h2>You have no books yet!</h2>';
-                return;
+       function displayBooks(books) {
+    books = books.items;
+    booksDisplay.innerHTML = '<h2>Our Collection</h2>';
+    books.forEach(book => {
+        let words = book.description.split(' ');
+        let shortDescription = words.slice(0, 20).join(' ');
+        shortDescription += words.length > 20 ? '...' : ''; 
+
+        const descriptionElement = document.createElement("p");
+        descriptionElement.textContent = shortDescription;
+        descriptionElement.className = 'book-description';
+
+        const moreButton = document.createElement('button');
+        moreButton.textContent = 'Read more';
+        moreButton.className = 'read-more-button';
+        moreButton.onclick = function() {
+            if (moreButton.textContent === 'Read more') {
+                descriptionElement.textContent = book.description;
+                moreButton.textContent = 'Read less';
+            } else {
+                descriptionElement.textContent = shortDescription;
+                moreButton.textContent = 'Read more';
             }
-            myBooksDisplay.innerHTML = '<h2>My Books</h2>';
-            console.log(books);
-            books.forEach(book => {
-                const bookElement = document.createElement('div');
-                bookElement.className = 'my-book-profile';
+        };
+
+        const bookElement = document.createElement('div');
+        bookElement.className = 'book-profile';
+
                 bookElement.innerHTML = `
                         <img src="${book.image}" alt="${book.title}">
                         <h3>${book.title}</h3>
@@ -129,6 +147,14 @@
                         <p>rating: ${book.rating}</p>
                         <p>comment: ${book.comment}</p>
 `;
+
+                // Append the elements to the bookElement
+        bookElement.appendChild(descriptionElement);
+        if (words.length > 20) {
+            bookElement.appendChild(moreButton);
+        }
+        bookElement.appendChild(detailsButton);
+
                 myBooksDisplay.appendChild(bookElement);
             });
         }
