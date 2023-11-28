@@ -147,6 +147,14 @@
                         <p>rating: ${book.rating}</p>
                         <p>comment: ${book.comment}</p>
 `;
+
+                // Append the elements to the bookElement
+        bookElement.appendChild(descriptionElement);
+        if (words.length > 20) {
+            bookElement.appendChild(moreButton);
+        }
+        bookElement.appendChild(detailsButton);
+
                 myBooksDisplay.appendChild(bookElement);
             });
         }
