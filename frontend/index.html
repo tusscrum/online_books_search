@@ -110,7 +110,7 @@
     books.forEach(book => {
         let words = book.description.split(' ');
         let shortDescription = words.slice(0, 20).join(' ');
-        shortDescription += words.length > 20 ? '...' : ''; 
+        shortDescription += words.length > 20 ? '...' : '';
 
         const descriptionElement = document.createElement("p");
         descriptionElement.textContent = shortDescription;
@@ -119,7 +119,8 @@
         const moreButton = document.createElement('button');
         moreButton.textContent = 'Read more';
         moreButton.className = 'read-more-button';
-        moreButton.onclick = function() {
+        moreButton.onclick = function(event) {
+            event.stopPropagation(); // Prevents triggering the parent's click event
             if (moreButton.textContent === 'Read more') {
                 descriptionElement.textContent = book.description;
                 moreButton.textContent = 'Read less';
@@ -131,16 +132,6 @@
 
         const bookElement = document.createElement('div');
         bookElement.className = 'book-profile';
-
-        // Create a link or button to redirect to the book detail page
-        const detailsButton = document.createElement('button');
-        detailsButton.textContent = 'View Details';
-        detailsButton.className = 'view-details-button';
-        detailsButton.onclick = function() {
-            // Assuming you have a book_detail.html page that can parse query parameters
-            window.location.href = `https://books.dehome.top/book_detail.html?isbn=${book.isbn}`;
-        };
-
         bookElement.innerHTML = `
                 <img src="${book.image}" alt="${book.title}" class="book-image">
                 <h3 class="book-title">${book.title}</h3>
@@ -148,20 +139,22 @@
                 <p class="book-isbn">ISBN: ${book.isbn}</p>
                 <p class="book-year">Year: ${book.year}</p>
                 `;
+        
+        // Redirect to book details page on click
+        bookElement.addEventListener('click', () => {
+            window.location.href = `https://books.dehome.top/book_detail.html?isbn=${book.isbn}`;
+        });
 
         // Append the elements to the bookElement
         bookElement.appendChild(descriptionElement);
         if (words.length > 20) {
             bookElement.appendChild(moreButton);
         }
-        bookElement.appendChild(detailsButton);
 
         // Append the bookElement to the booksDisplay container
         booksDisplay.appendChild(bookElement);
     });
 }
-
-
 
 
         // Event listener for search functionality
