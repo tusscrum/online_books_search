@@ -233,7 +233,7 @@
                 // remove confirm password
                 delete data.confirmPswd;
                 console.log(data);
-                fetch("http://127.0.0.1:8000/api/register", {
+                fetch("https://books.dehome.top/api/register", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -252,8 +252,15 @@
                             window.location.href = "index.html";
                         } else {
                             //[{"message":"User not found"},404]
+                            if ('message' in result) {
+                                alert(result.message)
+                            } else if ('message' in result[0]) {
+                                alert(result[0].message)
+                            } else {
+                                alert("Error: Please try again!")
+                            }
 
-                            alert(result[0].message);
+
                         }
                     })
                     .catch(error => {
@@ -312,8 +319,13 @@
                             window.location.href = "index.html";
                         } else {
                             //[{"message":"User not found"},404]
-
-                            alert(result[0].message);
+                            if ('message' in result) {
+                                alert(result.message)
+                            } else if ('message' in result[0]) {
+                                alert(result[0].message)
+                            } else {
+                                alert("Error: Please try again!")
+                            }
                         }
                     })
                     .catch(error => {
