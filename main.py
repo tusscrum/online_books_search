@@ -7,7 +7,7 @@ from starlette import status
 from control import get_book_info, search_books
 from dbs import users_collection, add_or_update_users_books, add_user, \
     fetch_all_books, add_books, fetch_one_user, fetch_one_book, fetch_all_users_books, fetch_one_user_by_id, \
-    update_users_books
+    update_users_books, fetch_one_user_books, delete_user_book
 from models import Books, UserBooks, UserRegister, UserLogin, CreateBooks
 
 # disable_installed_extensions_check()
@@ -173,6 +173,24 @@ async def update_book_to_user_books_list(id: str, user_books: CreateBooks = Body
         return {"message": "Update book to user's books list success", 'user_books': user_books}
 
 
+@app.delete('/api/user/{user_books_id}',
+            status_code=status.HTTP_200_OK,
+            response_description='Delete book from user\'s books list'
+            )
+async def delete_book_from_user_books_list(user_books_id: str):
+    """
+    Delete book from user's books list
+    :return: UserBooks
+    """
+    # if no user, return 404
+    user_books = await fetch_one_user_books(user_books_id)
+    if not user_books:
+        return {"message": "UserBooks not found"}, status.HTTP_404_NOT_FOUND
+    else:
+        await delete_user_book(user_books_id)
+        return {"message": "Delete book from user's books list success", 'user_books': user_books}
+
+
 @app.post('/api/login',
           status_code=status.HTTP_200_OK,
           response_description='Login',
@@ -205,6 +223,7 @@ async def register(user: UserRegister = Body(...)):
     :return: User
     """
     # if no user, return 404
+
     exit_user = await fetch_one_user(user.username) or await fetch_one_user(user.email)
     if exit_user:
         return {"message": "User already exists"}, status.HTTP_404_NOT_FOUND

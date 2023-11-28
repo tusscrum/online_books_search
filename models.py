@@ -244,7 +244,7 @@ class UserBooks(BaseModel):
     year: str = Field(...)
     image: str = Field(...)
     description: str = Field(...)
-    status: str = Field(default='reading', choices=['reading', 'read', 'want to read'])
+    status: str = Field(...)
     comment: str = Field(default='')
     rating: int = Field(default=0, gt=0, lt=6)
 

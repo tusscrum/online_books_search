@@ -151,3 +151,7 @@ async def fetch_all_users_books(user_id: str) -> list[dict]:
     async for user_book in users_books_collection.find({"user_id": user_id}).sort({"_id": -1}):
         user_books.append(helper_user_books(user_book))
     return user_books
+
+
+async def delete_user_book(user_book_id: str):
+    _ = await users_books_collection.delete_one({'_id': ObjectId(user_book_id)})
