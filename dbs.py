@@ -53,7 +53,7 @@ async def fetch_all_books():
     :return: list
     """
     books = []
-    async for book in books_collection.find():
+    async for book in books_collection.find().sort('_id', -1).limit(100):
         books.append(helper_books(book))
     return books
 
