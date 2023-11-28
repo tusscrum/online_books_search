@@ -45,11 +45,14 @@
 </header>
 
 <main>
+
     <section id="books">
-        <div id="my-books-display">
-        </div>
-        <div id="books-display">
-        </div>
+        <div id="search-books-display">
+
+            <div id="my-books-display">
+            </div>
+            <div id="books-display">
+            </div>
     </section>
 </main>
 
@@ -85,6 +88,7 @@
     document.addEventListener('DOMContentLoaded', function () {
             const booksDisplay = document.getElementById('books-display');
             const myBooksDisplay = document.getElementById('my-books-display');
+            const searchBooksDisplay = document.getElementById('search-books-display');
             const searchButton = document.getElementById('search-button');
             const searchQuery = document.getElementById('search-query');
             const darkModeButton = document.getElementById('dark-mode-button');
@@ -191,7 +195,7 @@
 
             function displayBooksSearch(books) {
                 books = books.items;
-                booksDisplay.innerHTML = '<h2>search results</h2>';
+                searchBooksDisplay.innerHTML = '<h2>search results</h2>';
                 books.forEach(book => {
                     const bookElement = document.createElement('div');
                     bookElement.className = 'book-profile';
@@ -219,7 +223,7 @@
                 // get localstorage
                 const user = JSON.parse(localStorage.getItem('user'));
                 if (!user) {
-                    alert('Please login first!');
+                    console.log('no user');
                 }
                 const userId = user.id;
                 const apiUrl = `https://books.dehome.top/api/user/${userId}/books`; // Replace with your actual API endpoint
