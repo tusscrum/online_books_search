@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Bookstore - Explore Books</title>
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/style.css"/>
 </head>
 <body>
 <header>
@@ -13,130 +13,117 @@
             <li><a href="index.html">Explore Books</a></li>
             <li><a href="my_books.html">My Books</a></li>
         </ul>
-    <h1>Bookstore</h1>
-    <!-- Search bar container -->
-    <div class="search-wrapper">
-        <input type="text" id="search-query" placeholder="Search books..." aria-label="Search books">
-        <button id="search-button" aria-label="Search">
-            <span class="search-icon">&#x1F50D;</span> <!-- Unicode magnifying glass -->
-        </button>
-    </div>
+        <h1>Bookstore</h1>
+        <!-- Search bar container -->
+        <div class="search-wrapper">
+            <input type="text" id="search-query" placeholder="Search books..." aria-label="Search books"/>
+            <button id="search-button" aria-label="Search"><span class="search-icon"></span>
+                <!-- Unicode magnifying glass --> </button>
+        </div>
         <!--if localstore get a user then hidden the login -->
-
-
-    <div id="login" class="login">
-        <button onclick="window.location.href='login.html'">Login</button>
-    </div>
-
+        <div id="login" class="login">
+            <button onclick="window.location.href='login.html'">Login</button>
+        </div>
         <div id="logout" class="logout">
             <button onclick="logout()">Logout</button>
         </div>
         <!-- show  username from localstorege -->
         <div id="username" class="username">
             <p id="username-text"></p>
-
-
-
-
-
-    <div class="dark-mode-toggle">
-        <button id="dark-mode-button">
-            <i class="dark-mode-icon">🌙</i>
-        </button>
-
-    </div>
+            <div class="dark-mode-toggle">
+                <button id="dark-mode-button"><i class="dark-mode-icon">&#55356;&#57113;</i></button>
+            </div>
+        </div>
+    </nav>
 </header>
-
 <main>
     <section id="my-books">
         <div id="my-books-display">
             <!-- Dynamically generated book profiles will be inserted here by JavaScript -->
         </div>
-    <section id="books">
-
-
-        <div id="books-display">
-            <!-- Dynamically generated book profiles will be inserted here by JavaScript -->
-        </div>
-
-    </section>
-</main>
-
-<footer>
-    <p>&copy; 2023 Bookstore. All rights reserved.</p>
-</footer>
-
-<script>
-    function logout() {
-        localStorage.removeItem('user');
-        window.location.href = "index.html";
-        hideLogin();
-    }
-     function updateLoginStatus() {
-    const login = document.getElementById('login');
-    const logout = document.getElementById('logout');
-    const username = document.getElementById('username-text');
-
-    if (localStorage.getItem('user')) {
-        // already login
-        login.style.display = 'none';
-        logout.style.display = 'block';
-        username.textContent = JSON.parse(localStorage.getItem('user')).username;
-    } else {
-        // already logout
-        login.style.display = 'block';
-        logout.style.display = 'none';
-        username.textContent = '';
-    }
-    document.addEventListener('DOMContentLoaded', function () {
-        const booksDisplay = document.getElementById('books-display');
-        const myBooksDisplay = document.getElementById('my-books-display');
-        const searchButton = document.getElementById('search-button');
-        const searchQuery = document.getElementById('search-query');
-        const darkModeButton = document.getElementById('dark-mode-button');
-
-        // Function to fetch and display books
-        function fetchBooks() {
-            fetch('https://books.dehome.top/api/books_list',
-                {
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(books => displayBooks(books))
-                .catch(error => console.error('Error fetching books:', error));
-        }
-       function displayBooks(books) {
-    books = books.items;
-    booksDisplay.innerHTML = '<h2>Our Collection</h2>';
-    books.forEach(book => {
-        let words = book.description.split(' ');
-        let shortDescription = words.slice(0, 20).join(' ');
-        shortDescription += words.length > 20 ? '...' : ''; 
-
-        const descriptionElement = document.createElement("p");
-        descriptionElement.textContent = shortDescription;
-        descriptionElement.className = 'book-description';
-
-        const moreButton = document.createElement('button');
-        moreButton.textContent = 'Read more';
-        moreButton.className = 'read-more-button';
-        moreButton.onclick = function() {
-            if (moreButton.textContent === 'Read more') {
-                descriptionElement.textContent = book.description;
-                moreButton.textContent = 'Read less';
-            } else {
-                descriptionElement.textContent = shortDescription;
-                moreButton.textContent = 'Read more';
+        <section id="books">
+            <div id="books-display">
+                <!-- Dynamically generated book profiles will be inserted here by JavaScript -->
+            </div>
+        </section>
+        <footer>
+            <p>&copy; 2023 Bookstore. All rights reserved.</p>
+        </footer>
+        <script>
+            function logout() {
+                localStorage.removeItem('user');
+                window.location.href = "index.html";
+                hideLogin();
             }
-        };
 
-        const bookElement = document.createElement('div');
-        bookElement.className = 'book-profile';
+            function updateLoginStatus() {
+                const login = document.getElementById('login');
+                const logout = document.getElementById('logout');
+                const username = document.getElementById('username-text');
 
-                bookElement.innerHTML = `
+                if (localStorage.getItem('user')) {
+                    // already login
+                    login.style.display = 'none';
+                    logout.style.display = 'block';
+                    username.textContent = JSON.parse(localStorage.getItem('user')).username;
+                } else {
+                    // already logout
+                    login.style.display = 'block';
+                    logout.style.display = 'none';
+                    username.textContent = '';
+                }
+                document.addEventListener('DOMContentLoaded', function () {
+                        const booksDisplay = document.getElementById('books-display');
+                        const myBooksDisplay = document.getElementById('my-books-display');
+                        const searchButton = document.getElementById('search-button');
+                        const searchQuery = document.getElementById('search-query');
+                        const darkModeButton = document.getElementById('dark-mode-button');
+
+                        // Function to fetch and display books
+                        function fetchBooks() {
+                            fetch('https://books.dehome.top/api/books_list',
+                                {
+                                    headers: {
+                                        'Access-Control-Allow-Origin': '*',
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(books => displayBooks(books))
+                                .catch(error => console.error('Error fetching books:', error));
+                        }
+
+
+                        function fetchMyBooks() {
+                            // get localstorage
+                            const user = JSON.parse(localStorage.getItem('user'));
+                            if (!user) {
+                                alert('Please login first!');
+                            }
+                            const userId = user.id;
+                            const apiUrl = `https://books.dehome.top/api/user/${userId}/books`; // Replace with your actual API endpoint
+                            fetch(apiUrl)
+                                .then(response => response.json())
+                                .then(data => {
+                                    // Display books
+                                    displayMyBooks(data.items);
+                                })
+                                .catch(error => {
+                                    console.error("Error fetching user's books:", error);
+                                });
+                        }
+
+                        function displayMyBooks(books) {
+                            if (books.length === 0) {
+                                myBooksDisplay.innerHTML = '<h2>You have no books yet!</h2>';
+                                return;
+                            }
+                            myBooksDisplay.innerHTML = '<h2>My Books</h2>';
+                            console.log(books);
+                            books.forEach(book => {
+                                const bookElement = document.createElement('div');
+                                bookElement.className = 'my-book-profile';
+                                bookElement.innerHTML = `
                         <img src="${book.image}" alt="${book.title}">
                         <h3>${book.title}</h3>
                         <p>Author: ${book.author}</p>
@@ -147,47 +134,22 @@
                         <p>rating: ${book.rating}</p>
                         <p>comment: ${book.comment}</p>
 `;
+                                myBooksDisplay.appendChild(bookElement);
+                            });
+                        }
 
-                // Append the elements to the bookElement
-        bookElement.appendChild(descriptionElement);
-        if (words.length > 20) {
-            bookElement.appendChild(moreButton);
-        }
-        bookElement.appendChild(detailsButton);
-
-                myBooksDisplay.appendChild(bookElement);
-            });
-        }
-        function fetchMyBooks() {
-           // get localstorage
-            const user = JSON.parse(localStorage.getItem('user'));
-            if (!user) {
-               alert('Please login first!');
-            }
-            const userId = user.id;
-            const apiUrl = `https://books.dehome.top/api/user/${userId}/books`; // Replace with your actual API endpoint
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    // Display books
-                    displayMyBooks(data.items);
-                })
-                .catch(error => {
-                    console.error("Error fetching user's books:", error);
-                });
-        }
-        // Function to display books
-        function displayBooks(books) {
-            books = books.items;
-            booksDisplay.innerHTML = '<h2>Our Collection</h2>';
-            books.forEach(book => {
-                const bookElement = document.createElement('div');
-                bookElement.className = 'book-profile';
-                // create a function to get the detail of the book
-                bookElement.addEventListener('click', function () {
-                    displayBookDetail(book);
-                });
-                bookElement.innerHTML = `
+                        // Function to display books
+                        function displayBooks(books) {
+                            books = books.items;
+                            booksDisplay.innerHTML = '<h2>Our Collection</h2>';
+                            books.forEach(book => {
+                                const bookElement = document.createElement('div');
+                                bookElement.className = 'book-profile';
+                                // create a function to get the detail of the book
+                                bookElement.addEventListener('click', function () {
+                                    displayBookDetail(book);
+                                });
+                                bookElement.innerHTML = `
                         <img src="${book.image}" alt="${book.title}">
                         <h3>${book.title}</h3>
                         <p>Author: ${book.author}</p>
@@ -195,88 +157,90 @@
                         <p>Year: ${book.year}</p>
                         <p>${book.description}</p>`;
 
-                booksDisplay.appendChild(bookElement);
-            });
-        }
+                                booksDisplay.appendChild(bookElement);
+                            });
+                        }
 
 
-        function displayBookDetail(book) {
-            // goto a new page to display the detail of the book
-            window.location.href = `https://books.dehome.top/book_detail.html?isbn=${book.isbn}`;
+                        function displayBookDetail(book) {
+                            // goto a new page to display the detail of the book
+                            window.location.href = `https://books.dehome.top/book_detail.html?isbn=${book.isbn}`;
 
-        }
+                        }
 
 
-        // Event listener for search functionality
-        searchButton.addEventListener('click', function () {
-            const query = searchQuery.value;
-            fetch(`https://books.dehome.top/api/search?query=${encodeURIComponent(query)}`)
-                .then(response => response.json())
-                .then(books => displayBooksSearch(books))
-                .catch(error => console.error('Error searching books:', error));
-        });
+                        // Event listener for search functionality
+                        searchButton.addEventListener('click', function () {
+                            const query = searchQuery.value;
+                            fetch(`https://books.dehome.top/api/search?query=${encodeURIComponent(query)}`)
+                                .then(response => response.json())
+                                .then(books => displayBooksSearch(books))
+                                .catch(error => console.error('Error searching books:', error));
+                        });
 
-        function displayBooksSearch(books) {
-            books = books.items;
-            booksDisplay.innerHTML = '<h2>search results</h2>';
-            books.forEach(book => {
-                const bookElement = document.createElement('div');
-                bookElement.className = 'book-profile';
-                bookElement.addEventListener('click', function () {
-                    displayBookDetail(book);
-                });
-                bookElement.innerHTML = `
+                        function displayBooksSearch(books) {
+                            books = books.items;
+                            booksDisplay.innerHTML = '<h2>search results</h2>';
+                            books.forEach(book => {
+                                const bookElement = document.createElement('div');
+                                bookElement.className = 'book-profile';
+                                bookElement.addEventListener('click', function () {
+                                    displayBookDetail(book);
+                                });
+                                bookElement.innerHTML = `
                         <img src="${book.image}" alt="${book.title}">
                         <h3>${book.title}</h3>
                         <p>Author: ${book.author}</p>
                         <p>ISBN: ${book.isbn}</p>
                         <p>Year: ${book.year}</p>
                         <p>${book.description}</p>`;
-                booksDisplay.appendChild(bookElement);
-            });
-        }
+                                booksDisplay.appendChild(bookElement);
+                            });
+                        }
 
 
-        // Dark mode toggle functionality
-        darkModeButton.addEventListener('click', function () {
-            document.body.classList.toggle('dark-mode');
-            darkModeButton.innerHTML = document.body.classList.contains('dark-mode')
-                ? '<i class="dark-mode-icon">☀️</i>'
-                : '<i class="dark-mode-icon">🌙</i>';
-        });
+                        // Dark mode toggle functionality
+                        darkModeButton.addEventListener('click', function () {
+                            document.body.classList.toggle('dark-mode');
+                            darkModeButton.innerHTML = document.body.classList.contains('dark-mode')
+                                ? '<i class="dark-mode-icon">☀️</i>'
+                                : '<i class="dark-mode-icon">🌙</i>';
+                        });
 
-        function hideLogin() {
-            const login = document.getElementById('login');
-            const logout = document.getElementById('logout');
-            const username = document.getElementById('username-text');
-            if (localStorage.getItem('user')) {
-                username.textContent = JSON.parse(localStorage.getItem('user')).username;
-                login.hidden = true;
-                logout.hidden = false;
+                        function hideLogin() {
+                            const login = document.getElementById('login');
+                            const logout = document.getElementById('logout');
+                            const username = document.getElementById('username-text');
+                            if (localStorage.getItem('user')) {
+                                username.textContent = JSON.parse(localStorage.getItem('user')).username;
+                                login.hidden = true;
+                                logout.hidden = false;
+
+                            } else {
+                                login.hidden = false;
+                                logout.hidden = true;
+                                username.textContent = '';
+                            }
+
+                        }
+
+                        // Initialize book display
+
+                        fetchBooks();
+                        fetchMyBooks();
+                        hideLogin();
+                    }
+                );
 
             }
-            else {
-                login.hidden = false;
-                logout.hidden = true;
-                username.textContent = '';
-            }
-
-        }
-
-        // Initialize book display
-        fetchBooks();
-        fetchMyBooks();
-        hideLogin();
-
-    }
-    );
-    }
-    updateLoginStatus();
 
 
+            updateLoginStatus();
 
-</script>
-<div id="books-container"></div>
+
+        </script>
+        <div id="books-container"></div>
+    </section>
+</main>
 </body>
 </html>
-            
