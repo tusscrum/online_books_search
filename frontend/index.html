@@ -213,6 +213,9 @@
         function logout() {
     localStorage.removeItem('user');
     hideLogin(); 
+    window.location.href = 'index.html';
+            
+            
 }
         function hideLogin() {
             const login = document.getElementById('login');
