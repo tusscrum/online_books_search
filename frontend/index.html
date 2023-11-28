@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookstore - Explore Books</title>
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/index.css">
 </head>
 <body>
 <header>
@@ -18,7 +18,7 @@
     <div class="search-wrapper">
         <input type="text" id="search-query" placeholder="Search books..." aria-label="Search books">
         <button id="search-button" aria-label="Search">
-            <span class="search-icon">&#x1F50D;</span> <!-- Unicode magnifying glass -->
+            <span class="search-icon">&#x1F50D;</span> 
         </button>
     </div>
         <!--if localstore get a user then hidden the login -->
@@ -48,17 +48,11 @@
 </header>
 
 <main>
-    <section id="my-books">
-        <div id="my-books-display">
-            <!-- Dynamically generated book profiles will be inserted here by JavaScript -->
-        </div>
     <section id="books">
-
-
-        <div id="books-display">
-            <!-- Dynamically generated book profiles will be inserted here by JavaScript -->
+        <div id="my-books-display">
         </div>
-
+        <div id="books-display">
+        </div>
     </section>
 </main>
 
@@ -69,24 +63,7 @@
 <script>
     function logout() {
         localStorage.removeItem('user');
-        window.location.href = "index.html";
         hideLogin();
-    }
-     function updateLoginStatus() {
-    const login = document.getElementById('login');
-    const logout = document.getElementById('logout');
-    const username = document.getElementById('username-text');
-
-    if (localStorage.getItem('user')) {
-        // already login
-        login.style.display = 'none';
-        logout.style.display = 'block';
-        username.textContent = JSON.parse(localStorage.getItem('user')).username;
-    } else {
-        // already logout
-        login.style.display = 'block';
-        logout.style.display = 'none';
-        username.textContent = '';
     }
     document.addEventListener('DOMContentLoaded', function () {
         const booksDisplay = document.getElementById('books-display');
@@ -97,18 +74,37 @@
 
         // Function to fetch and display books
         function fetchBooks() {
-            fetch('https://books.dehome.top/api/books_list',
-                {
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        'Content-Type': 'application/json'
-                    }
-                })
+            fetch('https://books.dehome.top/api/books_list')
                 .then(response => response.json())
                 .then(books => displayBooks(books))
                 .catch(error => console.error('Error fetching books:', error));
         }
-       function displayBooks(books) {
+
+        function displayMyBooks(books) {
+            if (books.length === 0) {
+                myBooksDisplay.innerHTML = '<h2>You have no books yet!</h2>';
+                return;
+            }
+            myBooksDisplay.innerHTML = '<h2>My Books</h2>';
+            console.log(books);
+            books.forEach(book => {
+                const bookElement = document.createElement('div');
+                bookElement.className = 'my-book-profile';
+                bookElement.innerHTML = `
+                        <img src="${book.image}" alt="${book.title}">
+                        <h3>${book.title}</h3>
+                        <p>Author: ${book.author}</p>
+                        <p>ISBN: ${book.isbn}</p>
+                        <p>Year: ${book.year}</p>
+                        <p>${book.description}</p>
+                        <p>Status: ${book.status}</p>
+                        <p>rating: ${book.rating}</p>
+                        <p>comment: ${book.comment}</p>
+`;
+            });
+        }
+
+        function displayBooks(books) {
     books = books.items;
     booksDisplay.innerHTML = '<h2>Our Collection</h2>';
     books.forEach(book => {
@@ -136,81 +132,42 @@
         const bookElement = document.createElement('div');
         bookElement.className = 'book-profile';
 
-                bookElement.innerHTML = `
-                        <img src="${book.image}" alt="${book.title}">
-                        <h3>${book.title}</h3>
-                        <p>Author: ${book.author}</p>
-                        <p>ISBN: ${book.isbn}</p>
-                        <p>Year: ${book.year}</p>
-                        <p>${book.description}</p>
-                        <p>Status: ${book.status}</p>
-                        <p>rating: ${book.rating}</p>
-                        <p>comment: ${book.comment}</p>
-`;
+        // Create a link or button to redirect to the book detail page
+        const detailsButton = document.createElement('button');
+        detailsButton.textContent = 'View Details';
+        detailsButton.className = 'view-details-button';
+        detailsButton.onclick = function() {
+            // Assuming you have a book_detail.html page that can parse query parameters
+            window.location.href = `https://books.dehome.top/book_detail.html?isbn=${book.isbn}`;
+        };
 
-                // Append the elements to the bookElement
+        bookElement.innerHTML = `
+                <img src="${book.image}" alt="${book.title}" class="book-image">
+                <h3 class="book-title">${book.title}</h3>
+                <p class="book-author">Author: ${book.author}</p>
+                <p class="book-isbn">ISBN: ${book.isbn}</p>
+                <p class="book-year">Year: ${book.year}</p>
+                `;
+
+        // Append the elements to the bookElement
         bookElement.appendChild(descriptionElement);
         if (words.length > 20) {
             bookElement.appendChild(moreButton);
         }
         bookElement.appendChild(detailsButton);
 
-                myBooksDisplay.appendChild(bookElement);
-            });
-        }
-        function fetchMyBooks() {
-           // get localstorage
-            const user = JSON.parse(localStorage.getItem('user'));
-            if (!user) {
-               alert('Please login first!');
-            }
-            const userId = user.id;
-            const apiUrl = `https://books.dehome.top/api/user/${userId}/books`; // Replace with your actual API endpoint
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    // Display books
-                    displayMyBooks(data.items);
-                })
-                .catch(error => {
-                    console.error("Error fetching user's books:", error);
-                });
-        }
-        // Function to display books
-        function displayBooks(books) {
-            books = books.items;
-            booksDisplay.innerHTML = '<h2>Our Collection</h2>';
-            books.forEach(book => {
-                const bookElement = document.createElement('div');
-                bookElement.className = 'book-profile';
-                // create a function to get the detail of the book
-                bookElement.addEventListener('click', function () {
-                    displayBookDetail(book);
-                });
-                bookElement.innerHTML = `
-                        <img src="${book.image}" alt="${book.title}">
-                        <h3>${book.title}</h3>
-                        <p>Author: ${book.author}</p>
-                        <p>ISBN: ${book.isbn}</p>
-                        <p>Year: ${book.year}</p>
-                        <p>${book.description}</p>`;
-
-                booksDisplay.appendChild(bookElement);
-            });
-        }
+        // Append the bookElement to the booksDisplay container
+        booksDisplay.appendChild(bookElement);
+    });
+}
 
 
-        function displayBookDetail(book) {
-            // goto a new page to display the detail of the book
-            window.location.href = `https://books.dehome.top/book_detail.html?isbn=${book.isbn}`;
-
-        }
 
 
         // Event listener for search functionality
         searchButton.addEventListener('click', function () {
             const query = searchQuery.value;
-            fetch(`https://books.dehome.top/api/search?query=${encodeURIComponent(query)}`)
+            fetch(`/api/search?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(books => displayBooksSearch(books))
                 .catch(error => console.error('Error searching books:', error));
@@ -222,9 +179,6 @@
             books.forEach(book => {
                 const bookElement = document.createElement('div');
                 bookElement.className = 'book-profile';
-                bookElement.addEventListener('click', function () {
-                    displayBookDetail(book);
-                });
                 bookElement.innerHTML = `
                         <img src="${book.image}" alt="${book.title}">
                         <h3>${book.title}</h3>
@@ -244,7 +198,24 @@
                 ? '<i class="dark-mode-icon">☀️</i>'
                 : '<i class="dark-mode-icon">🌙</i>';
         });
-
+        function fetchMyBooks() {
+           // get localstorage
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+               alert('Please login first!');
+            }
+            const userId = user.id;
+            const apiUrl = `https://books.dehome.top/api/user/{userid}/books`; 
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Display books
+                    displayMyBooks(data.items);
+                })
+                .catch(error => {
+                    console.error("Error fetching user's books:", error);
+                });
+        }
         function hideLogin() {
             const login = document.getElementById('login');
             const logout = document.getElementById('logout');
@@ -265,16 +236,9 @@
 
         // Initialize book display
         fetchBooks();
-        fetchMyBooks();
+        //fetchMyBooks();
         hideLogin();
-
-    }
-    );
-    }
-    updateLoginStatus();
-
-
-
+    });
 </script>
 <div id="books-container"></div>
 </body>
