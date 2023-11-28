@@ -210,13 +210,6 @@
                     console.error("Error fetching user's books:", error);
                 });
         }
-        function logout() {
-    localStorage.removeItem('user');
-    hideLogin(); 
-    window.location.href = 'index.html';
-            
-            
-}
         function hideLogin() {
             const login = document.getElementById('login');
             const logout = document.getElementById('logout');
@@ -225,21 +218,21 @@
                 username.textContent = JSON.parse(localStorage.getItem('user')).username;
                 login.hidden = true;
                 logout.hidden = false;
-
             }
             else {
                 login.hidden = false;
                 logout.hidden = true;
                 username.textContent = '';
             }
-
         }
-
         // Initialize book display
         fetchBooks();
-        //fetchMyBooks();
+        fetchMyBooks();
         hideLogin();
-    });
+    }
+    );
+    }
+    updateLoginStatus();
 </script>
 <div id="books-container"></div>
 </body>
