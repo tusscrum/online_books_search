@@ -75,15 +75,10 @@ jobs:
             export MONGODB_URL=$MONGODB_URL
             export GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
             cp ../conf.py conf.py
-            sudo supervisorctl stop fastapi
-            # Update Supervisor configuration (create or update)
-            echo "[program:fastapi]" | sudo tee /etc/supervisor/conf.d/fastapi.conf && \
-            echo "command=/home/ubuntu/online_books_search/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8080" | sudo tee -a /etc/supervisor/conf.d/fastapi.conf && \
-            sudo supervisorctl reread && \
-            sudo supervisorctl update
+            kill -9 $(lsof -t -i:8080)
+            nohup uvicorn main:app --host 0.0.0.0 --port 8080 &
             
-            # Start FastAPI using Supervisor
-            sudo supervisorctl start fastapi
+
 
             
 
