@@ -187,7 +187,7 @@
             // Event listener for search functionality
             searchButton.addEventListener('click', function () {
                 const query = searchQuery.value;
-                fetch(`/api/search?query=${encodeURIComponent(query)}`)
+                fetch(`https://books.dehome.top/api/search?query=${encodeURIComponent(query)}`)
                     .then(response => response.json())
                     .then(books => displayBooksSearch(books))
                     .catch(error => console.error('Error searching books:', error));
@@ -206,7 +206,7 @@
                         <p>ISBN: ${book.isbn}</p>
                         <p>Year: ${book.year}</p>
                         <p>${book.description}</p>`;
-                    booksDisplay.appendChild(bookElement);
+                    searchBooksDisplay.appendChild(bookElement);
                 });
             }
 
