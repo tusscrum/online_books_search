@@ -8,40 +8,39 @@
 </head>
 
 <body>
-    
 
-    <div class="main">
-        <input type="checkbox" id="chk" aria-hidden="true">
 
-        <div class="signup">
-            <form id="signupForm">
-                <button class="back-to-bookstore" onclick="redirectToBookstore()">Homepage</button>
-                <label for="chk" aria-hidden="true">Sign up</label>
-                <input type="text" name="txt" placeholder="User name" required="" autocomplete="off">
-                <input type="email" name="email" placeholder="Email" required="" autocomplete="off">
-                <div class="password-container">
-                    <input type="password" name="pswd" id="password" placeholder="Password" required="">
-                    <span class="eye" onclick="togglePassword('password')">👁️</span>
-                </div>
-                <div class="password-container">
-                    <input type="password" name="confirmPswd" id="confirmPassword" placeholder="Confirm password" required="">
-                    <span class="eye" onclick="togglePassword('confirmPassword')">👁️</span>
-                </div>
-                <button type="button" onclick="validateSignUp()">Sign up</button>
-            </form>
-        </div>
+<div class="main">
+    <input type="checkbox" id="chk" aria-hidden="true">
+    <div class="signup">
+        <form id="signupForm">
+            <button class="back-to-bookstore" onclick="redirectToBookstore()">Homepage</button>
+            <label for="chk" aria-hidden="true">Sign up</label>
+            <input type="text" name="username" placeholder="User name" required="" autocomplete="off">
+            <input type="email" name="email" placeholder="Email" required="" autocomplete="off">
+            <div class="password-container">
+                <input type="password" name="password" id="password" placeholder="Password" required="">
+                <span class="eye" onclick="togglePassword('password')">👁️</span>
+            </div>
+            <div class="password-container">
+                <input type="password" name="confirmPswd" id="confirmPassword" placeholder="Confirm password"
+                       required="">
+                <span class="eye" onclick="togglePassword('confirmPassword')">👁️</span>
+            </div>
+            <button type="button" onclick="validateSignUp()">Sign up</button>
+        </form>
+    </div>
 
-  
 
-     <div class="login">
+    <div class="login">
         <form id="loginForm">
-        <label for="chk" aria-hidden="true">Login</label>
-        <input type="text" name="username" placeholder="User name or email" required="" autocomplete="on">
-        <div class="password-container">
-            <input type="password" name="password" id="loginPassword" placeholder="Password" required="">
-            <span class="eye" onclick="togglePassword('loginPassword')">👁️</span>
-        </div>
-        <button>Login</button>
+            <label for="chk" aria-hidden="true">Login</label>
+            <input type="text" name="username" placeholder="User name or email" required="" autocomplete="on">
+            <div class="password-container">
+                <input type="password" name="password" id="loginPassword" placeholder="Password" required="">
+                <span class="eye" onclick="togglePassword('loginPassword')">👁️</span>
+            </div>
+            <button>Login</button>
         </form>
     </div>
 
@@ -52,7 +51,7 @@
     </div>
 
     <style>
-        
+
         .modal {
             display: none;
             position: fixed;
@@ -75,7 +74,6 @@
         }
 
 
-        
         body {
             margin: 0;
             padding: 0;
@@ -96,106 +94,109 @@
             border-radius: 10px;
             box-shadow: 5px 30px 50px black;
         }
-   
-#chk {
-display: none;
-}
 
-.signup {
-position: relative;
-width: 100%;
-height: 100%;
-}
+        #chk {
+            display: none;
+        }
 
-.back-to-bookstore {
-    position: absolute;
-    top: -60px;
-    left: 50%;
-    box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.5);
-    transform: translateX(-50%);
+        .signup {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
 
-}
+        .back-to-bookstore {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.5);
+            transform: translateX(-50%);
 
-label {
-   color:rgba(255, 255, 255, 0.68);
-   font-size: 35px;
-   justify-content: center;
-   display: flex;
-   margin: 60px;
-   font-weight: bold;
-   cursor: pointer;
-   transition: .5s ease-in-out;
-   margin-bottom: 10px;
-}
- 
-input {
- width: 60%;
-  background:white;
-height: 20px;
-justify-content: center;
-display: flex;
-margin: 18px auto;
-padding: 10px;
-border: none;
-outline: none;
-border-radius: 50px;
- }
+        }
 
-  
-button {
-   width: 60%;
-   height: 40px;
-  margin: 10px auto;
-  justify-content: center; 
-  display: block;
- color: white;
-   background: rgb(43, 98, 194);
-    font-size: 20px;
-    font-weight: bold;
-    margin-top: 18px; outline: none;
-   border: none;
-   border-radius: 10px;
-   transition: .3s ease-in;
-   cursor: pointer;
-   box-shadow: 5px 20px 40px black;
-}
+        label {
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 35px;
+            justify-content: center;
+            display: flex;
+            margin: 60px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .5s ease-in-out;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 60%;
+            background: white;
+            height: 20px;
+            justify-content: center;
+            display: flex;
+            margin: 18px auto;
+            padding: 10px;
+            border: none;
+            outline: none;
+            border-radius: 50px;
+        }
 
 
-  
-button:hover {
-  background: rgb(20, 57, 105);
-}
-.login {
-
-    height: 460px;
-    background: #eee; 
-    border-radius: 60% / 10%;
-   transform: translateY(-180px); 
-   transition: .8s ease-in-out;
-}
-
-.login label {
-   color: #573b8a;
-   
-   transform: scale(.6);
-}
-.login p {
-text-align: center;
-padding: 20px;
-}
-
-#chk:checked ~ .login {
-
-transform: translateY(-500px);
-}
+        button {
+            width: 60%;
+            height: 40px;
+            margin: 10px auto;
+            justify-content: center;
+            display: block;
+            color: white;
+            background: rgb(43, 98, 194);
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 18px;
+            outline: none;
+            border: none;
+            border-radius: 10px;
+            transition: .3s ease-in;
+            cursor: pointer;
+            box-shadow: 5px 20px 40px black;
+        }
 
 
-#chk:checked ~ .login label { 
-    transform: scale(1);
-}
-#chk:checked ~ .signup label { transform: 
-    scale(.6);
-}
+        button:hover {
+            background: rgb(20, 57, 105);
+        }
+
+        .login {
+
+            height: 460px;
+            background: #eee;
+            border-radius: 60% / 10%;
+            transform: translateY(-180px);
+            transition: .8s ease-in-out;
+        }
+
+        .login label {
+            color: #573b8a;
+
+            transform: scale(.6);
+        }
+
+        .login p {
+            text-align: center;
+            padding: 20px;
+        }
+
+        #chk:checked ~ .login {
+
+            transform: translateY(-500px);
+        }
+
+
+        #chk:checked ~ .login label {
+            transform: scale(1);
+        }
+
+        #chk:checked ~ .signup label {
+            transform: scale(.6);
+        }
 
         .password-container {
             position: relative;
@@ -212,21 +213,56 @@ transform: translateY(-500px);
 
     <script>
         function validateSignUp() {
-            var userName = document.getElementsByName("txt")[0].value;
-        var email = document.getElementsByName("email")[0].value;
-        var password = document.getElementById("password").value;
-        var confirmPassword = document.getElementById("confirmPassword").value;
+            var username = document.getElementsByName("username")[0].value;
+            console.log(username);
+            var email = document.getElementsByName("email")[0].value;
+            var password = document.getElementsByName("password")[0].value;
+            var confirmPassword = document.getElementsByName("confirmPswd")[0].value;
 
-        if (!userName || !email || !password || !confirmPassword) {
-            showPopup("Please enter the user name, email, password, and confirm password.");
-        } else if (password.length < 6) {
-            showPopup("Password is not complicated enough, please enter 6-12 characters");
-        } else if (password !== confirmPassword) {
-            showPopup("Please reconfirm the password is the same twice");
-        } else {
-            showPopup("You have successfully registered!!");
+            if (!username || !email || !password || !confirmPassword) {
+                showPopup("Please enter the user name, email, password, and confirm password.");
+            } else if (password.length < 6) {
+                showPopup("Password is not complicated enough, please enter 6-12 characters");
+            } else if (password !== confirmPassword) {
+                showPopup("Please reconfirm the password is the same twice");
+            } else {
+                // get the form data
+                const signupForm = document.getElementById("signupForm");
+                const formData = new FormData(signupForm);
+                const data = Object.fromEntries(formData);
+                // remove confirm password
+                delete data.confirmPswd;
+                console.log(data);
+                fetch("http://127.0.0.1:8000/api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log(result);
+                        if ('user' in result) {
+                            // setlocalstorage to store the user
+                            localStorage.setItem("user", JSON.stringify(result.user));
+                            alert("You have successfully registered!")
+                            // Redirect to the login page
+                            window.location.href = "index.html";
+                        } else {
+                            //[{"message":"User not found"},404]
+
+                            alert(result[0].message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+
+            }
         }
-    }
+
         function showPopup(message) {
             var popup = document.getElementById("popup");
             var popupText = document.getElementById("popupText");
@@ -243,72 +279,49 @@ transform: translateY(-500px);
             var input = document.getElementById(inputId);
             input.type = (input.type === "password") ? "text" : "password";
         }
-        
+
         function redirectToBookstore() {
-                window.location.href = "index.html";
-            }
-       // registe button to post a request to api/register
-        const signupForm = document.getElementById("signupForm");
-        signupForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-            const formData = new FormData(signupForm);
-            const data = Object.fromEntries(formData);
-            fetch("/api/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json())
-                .then(result => {
-                    if ('user' in result) {
-                        // setlocalstorage to store the user
-                        localStorage.setItem("user", JSON.stringify(result.user));
-                        // Redirect to the login page
-                        window.location.href = "index.html";
-                    } else {
-                        alert(result.message);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                });
-        });
+            window.location.href = "index.html";
+        }
+
+        // registe button to post a request to api/register
+
         // login button to post a request to api/login
         const loginForm = document.getElementById("loginForm");
         loginForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-            const formData = new FormData(loginForm);
-            const data = Object.fromEntries(formData);
-            console.log(data);
-            fetch("https://books.dehome.top/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                event.preventDefault();
+                const formData = new FormData(loginForm);
+                const data = Object.fromEntries(formData);
+                console.log(data);
+                fetch("https://books.dehome.top/api/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json())
-                .then(result => {
-                    console.log(result);
-                    if ('user' in result) {
-                        // setlocalstorage to store the user
-                        localStorage.setItem("user", JSON.stringify(result.user));
-                        alert("You have successfully logged in!")
-                        // Redirect to the login page
-                        window.location.href = "index.html";
-                    } else {
-                        //[{"message":"User not found"},404]
-
-                        alert(result[0].message);
-                    }
+                    body: JSON.stringify(data)
                 })
-                .catch(error => {
-                    console.error("Error:", error);
-                });
-        });
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log(result);
+                        if ('user' in result) {
+                            // setlocalstorage to store the user
+                            localStorage.setItem("user", JSON.stringify(result.user));
+                            alert("You have successfully logged in!")
+                            // Redirect to the login page
+                            window.location.href = "index.html";
+                        } else {
+                            //[{"message":"User not found"},404]
+
+                            alert(result[0].message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+
+            }
+        );
     </script>
 </body>
 </html>
