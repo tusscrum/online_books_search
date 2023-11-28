@@ -76,7 +76,7 @@ jobs:
             export GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
             cp ../conf.py conf.py
             kill -9 $(lsof -t -i:8080)
-            nohup uvicorn main:app --host 0.0.0.0 --port 8080 &
+            nohup uvicorn main:app --host 0.0.0.0 --port 8080 > /dev/null 2>&1 & disown
             
 
 
