@@ -61,10 +61,28 @@
 </footer>
 
 <script>
-    function logout() {
+   function logout() {
         localStorage.removeItem('user');
+        window.location.href = "index.html";
         hideLogin();
     }
+    function updateLoginStatus() {
+    const login = document.getElementById('login');
+    const logout = document.getElementById('logout');
+    const username = document.getElementById('username-text');
+
+    if (localStorage.getItem('user')) {
+        // already login
+        login.style.display = 'none';
+        logout.style.display = 'block';
+        username.textContent = JSON.parse(localStorage.getItem('user')).username;
+    } else {
+        // already logout
+        login.style.display = 'block';
+        logout.style.display = 'none';
+        username.textContent = '';
+    }
+}
     document.addEventListener('DOMContentLoaded', function () {
         const booksDisplay = document.getElementById('books-display');
         const myBooksDisplay = document.getElementById('my-books-display');
@@ -218,21 +236,21 @@
                 username.textContent = JSON.parse(localStorage.getItem('user')).username;
                 login.hidden = true;
                 logout.hidden = false;
-
             }
             else {
                 login.hidden = false;
                 logout.hidden = true;
                 username.textContent = '';
             }
-
         }
-
         // Initialize book display
         fetchBooks();
         //fetchMyBooks();
         hideLogin();
-    });
+    }
+    );
+
+    updateLoginStatus();
 </script>
 <div id="books-container"></div>
 </body>
