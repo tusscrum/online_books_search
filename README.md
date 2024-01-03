@@ -56,9 +56,12 @@ uvicorn main:app --reload
 ## thing to do
 
 - [x] Add swagger documentation
-- [x] Add user authentication
+- [ ] Add user authentication JWT
+- [ ] user own search history
+- [ ] download book (pdf,zlibary)
 - [x] deploy to aws
 - [x] CI/CD (use github actions)
 - [x] Add tests
+- 
 
  
