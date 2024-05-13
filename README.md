@@ -2,8 +2,12 @@
 
 ## Description
 
-This is a simple web application that allows users to search for books and save them to a list. The application uses the
-Google Books API to retrieve book information.
+This web application provides a simple interface for users to search for books and add them to a list, utilizing the Google Books API to fetch book information. It serves as a practical tool for learning agile development and automated deployment. This project is part of a team assignment for the "Software Engineering" course at the Technological University of the Shannon (TUS).
+
+
+
+
+
 
 ## Setup
 
